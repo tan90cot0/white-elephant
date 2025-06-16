@@ -1,154 +1,15 @@
 import React, { useState } from 'react';
-import { Heart, Clock, MapPin, Quote, Gift, Cake, Star, Camera } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Heart, Clock, MapPin, Quote, Gift, Cake, Star, Camera, Plus, Edit3, Trash2, X, Save, User, Globe } from 'lucide-react';
+import { useMemories } from '../context/MemoryContext';
 
 const Memories = () => {
+  const navigate = useNavigate();
+  const { memories, addMemory, editMemory, deleteMemory, setSelectedMemoryForMap } = useMemories();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedYear, setSelectedYear] = useState('all');
-
-  const memories = [
-    // Timeline Events (from old Timeline page)
-    {
-      id: 1,
-      title: "Father's Day Celebration",
-      date: "June 18, 2023",
-      category: "celebration",
-      location: "Home",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Aryan",
-      story: "A heartwarming Father's Day celebration where we surprised Dad with his favorite cake and heartfelt letters. The joy on his face was priceless as we gathered around the dinner table, sharing stories and expressing our gratitude for everything he has done for our family. It was a day filled with laughter, warm hugs, and the kind of love that makes a house a home. Dad's reaction when he saw the handmade card from Sparsh was absolutely priceless - he teared up and said it was the best gift he'd ever received.",
-      tags: ["celebration", "father's day", "family time", "love"],
-      image: "https://images.unsplash.com/photo-1567722681333-3115abe1a4c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023",
-      icon: Cake
-    },
-    {
-      id: 2,
-      title: "Mom's Special Day - Women's Day",
-      date: "March 8, 2023",
-      category: "celebration",
-      location: "Home",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Sparsh",
-      story: "Celebrating our amazing mother on Women's Day with a surprise breakfast in bed and a handmade photo album filled with all our favorite family memories. Mom's eyes lit up as she flipped through each page, reliving the beautiful moments we've shared together. Her smile reminded us once again why she's the heart of our family. We spent the entire morning just talking, laughing, and sharing stories while she enjoyed her favorite tea and the pancakes we made from scratch.",
-      tags: ["celebration", "women's day", "appreciation", "breakfast"],
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023",
-      icon: Heart
-    },
-    {
-      id: 3,
-      title: "Sparsh's 18th Birthday Milestone",
-      date: "October 15, 2022",
-      category: "milestone",
-      location: "Home",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Anju",
-      story: "Our youngest family member officially became an adult! We threw a wonderful birthday party with all his friends and family. Sparsh cut the cake with such happiness, and we couldn't be prouder of the young man he has become. The evening was filled with music, dancing, and endless stories about his childhood that had everyone in splits. The surprise video montage we created with clips from his childhood made everyone emotional, especially when we showed his first steps and first words.",
-      tags: ["milestone", "birthday", "growing up", "celebration"],
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022",
-      icon: Gift
-    },
-    {
-      id: 4,
-      title: "Family Vacation to Goa",
-      date: "August 20, 2022",
-      category: "travel",
-      location: "Goa",
-      coordinates: { lat: 15.2993, lng: 74.1240 }, // Goa coordinates
-      author: "Jitesh",
-      story: "An unforgettable week-long family vacation to the beautiful beaches of Goa. We stayed in a cozy beach resort, tried water sports, explored local markets, and enjoyed the most amazing seafood. The highlight was watching the sunset together on Baga Beach while dad told us stories from his own childhood vacations. These are the moments that bind us together. Sparsh learned to surf, Aryan tried parasailing, and Mom collected the most beautiful seashells. Every evening we'd sit on the beach and plan the next day's adventures.",
-      tags: ["travel", "vacation", "beach", "bonding"],
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022",
-      icon: Camera
-    },
-    {
-      id: 5,
-      title: "New Year's Family Resolution",
-      date: "December 31, 2022",
-      category: "milestone",
-      location: "Living Room",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Aryan",
-      story: "As we welcomed 2023, our family made a collective resolution to spend more quality time together and create lasting memories. We decided to have weekly family game nights, monthly outings, and to document our journey better. This website is actually a part of that resolution - a digital space to preserve and celebrate our family bond. We wrote down our individual goals and our family goals, sealing them in an envelope to open next New Year's Eve.",
-      tags: ["resolution", "new year", "family goals", "tradition"],
-      image: "https://images.unsplash.com/photo-1467810563316-b5476525c0f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022",
-      icon: Star
-    },
-    // Original Memory Stories
-    {
-      id: 6,
-      title: "The Great Pizza Disaster of 2022",
-      date: "September 15, 2022",
-      category: "funny",
-      location: "Kitchen",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Aryan",
-      story: "It was a Saturday evening when Dad decided he was going to make the 'perfect homemade pizza' for the family. Armed with YouTube tutorials and unwavering confidence, he started the adventure. What followed was a comedy of errors - flour everywhere, dough stuck to the ceiling (yes, the ceiling!), and a smoke alarm that wouldn't stop beeping. Mom tried to help but was laughing too hard to be useful. Sparsh was recording everything for his social media. In the end, we ordered pizza delivery, but we gained a memory that still makes us laugh until our stomachs hurt. Dad's pizza-making attempts are now a running joke in our family.",
-      tags: ["cooking", "family time", "laughter", "chaos"],
-      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022",
-      icon: Heart
-    },
-    {
-      id: 7,
-      title: "Mom's Secret Garden Surprise",
-      date: "April 22, 2023",
-      category: "heartwarming",
-      location: "Backyard",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Sparsh",
-      story: "For months, Mom had been secretly planning something in the backyard. She would disappear for hours, coming back with dirt under her fingernails and a mysterious smile. We were all curious but she insisted it was a 'surprise for the family.' On Earth Day, she finally revealed her project - a beautiful vegetable garden with each section dedicated to one family member's favorite vegetables. There was a tomato section for Dad (he loves his salads), herbs for me (I'm the family's budding chef), carrots for Aryan (his childhood favorite), and chili peppers for her own cooking. The best part? She had made little signs with our names and photos from when we were kids. It wasn't just a garden; it was a love letter to each of us.",
-      tags: ["love", "surprise", "gardening", "family", "thoughtful"],
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023",
-      icon: Heart
-    },
-    {
-      id: 8,
-      title: "The Midnight Board Game Championship",
-      date: "December 31, 2022",
-      category: "tradition",
-      location: "Living Room",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Jitesh",
-      story: "Every New Year's Eve, we have this tradition of staying up until midnight playing board games. This particular year, what started as a friendly game of Monopoly turned into an epic 6-hour championship battle. Anju was the property mogul, owning half the board by hour 3. Sparsh kept going to jail (ironically), and Aryan was the banker who somehow kept 'accidentally' giving himself extra money. I was just trying to survive! As midnight approached, we were all so invested in the game that we almost missed the countdown. We ended up welcoming the new year with dice in our hands and property cards scattered everywhere. The game? It's still technically ongoing - the board has been set up in the corner of our living room for over a year now.",
-      tags: ["tradition", "games", "new year", "competition", "laughter"],
-      image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022",
-      icon: Star
-    },
-    {
-      id: 9,
-      title: "Sparsh's Driving Test Adventure",
-      date: "March 8, 2023",
-      category: "milestone",
-      location: "DMV",
-      coordinates: { lat: 40.7505, lng: -73.9934 }, // Manhattan DMV coordinates
-      author: "Anju",
-      story: "The day Sparsh was scheduled to take his driving test, he was more nervous than we'd ever seen him. He had been practicing for months, but suddenly he was convinced he'd forget everything. The whole family decided to turn it into a support mission. We made encouraging signs, brought his favorite snacks, and created a playlist of 'confidence-boosting' songs for the car ride. When he came out of the test, his face was unreadable. He walked slowly toward us, and we all held our breath. Then, suddenly, he broke into the biggest grin and yelled 'I PASSED!' The DMV parking lot turned into our own little celebration party. Other families looked at us like we were crazy, but we didn't care. Our youngest had reached another milestone, and we were bursting with pride.",
-      tags: ["milestone", "pride", "growing up", "achievement", "support"],
-      image: "https://images.unsplash.com/photo-1570025330536-a4d5ad4d4d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023",
-      icon: Gift
-    },
-    {
-      id: 10,
-      title: "The Family Talent Show Nobody Asked For",
-      date: "July 4, 2023",
-      category: "funny",
-      location: "Living Room",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Aryan",
-      story: "It was a lazy Sunday afternoon when Sparsh declared that our family was 'too boring' and needed more excitement. His solution? An impromptu family talent show with himself as the host and judge. Mom performed a dramatic reading of a grocery list, complete with Shakespearean gestures. Dad did magic tricks that were more comedy than magic (his card tricks involved us 'picking a card, any card' from a deck that only had jokers). I attempted to beatbox while solving a Rubik's cube - it was as disastrous as it sounds. Sparsh saved his own performance for last: an interpretive dance routine to the theme song of his favorite cartoon. By the end, we were all crying from laughter. The 'winner' was declared to be the family as a whole, and the prize was ice cream for everyone. Sometimes the best entertainment is the kind you create yourself.",
-      tags: ["entertainment", "creativity", "laughter", "spontaneous", "talent"],
-      image: "https://images.unsplash.com/photo-1541696877-7b9f4a5d9ad2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023",
-      icon: Heart
-    }
-  ];
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editingMemory, setEditingMemory] = useState(null);
 
   const categories = [
     { value: 'all', label: 'All Memories', count: memories.length },
@@ -192,11 +53,282 @@ const Memories = () => {
     return icons[category] || '📝';
   };
 
+  const handleSeeOnMap = (memory) => {
+    setSelectedMemoryForMap(memory);
+    navigate('/map');
+  };
+
+  const handleAddMemory = (newMemory) => {
+    addMemory(newMemory);
+    setShowAddModal(false);
+  };
+
+  const handleEditMemory = (updatedMemory) => {
+    editMemory(updatedMemory);
+    setEditingMemory(null);
+  };
+
+  const handleDeleteMemory = (memoryId) => {
+    if (window.confirm('Are you sure you want to delete this memory?')) {
+      deleteMemory(memoryId);
+    }
+  };
+
+  const MemoryForm = ({ memory, onSave, onClose, isEdit = false }) => {
+    const [formData, setFormData] = useState(memory || {
+      title: '',
+      date: '',
+      category: 'celebration',
+      location: '',
+      coordinates: { lat: 40.7128, lng: -74.0060 },
+      author: '',
+      story: '',
+      tags: [],
+      image: '',
+    });
+
+    const [tagInput, setTagInput] = useState('');
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      onSave(formData);
+    };
+
+    const addTag = () => {
+      if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
+        setFormData(prev => ({
+          ...prev,
+          tags: [...prev.tags, tagInput.trim()]
+        }));
+        setTagInput('');
+      }
+    };
+
+    const removeTag = (tagToRemove) => {
+      setFormData(prev => ({
+        ...prev,
+        tags: prev.tags.filter(tag => tag !== tagToRemove)
+      }));
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-800">
+                {isEdit ? 'Edit Memory' : 'Add New Memory'}
+              </h2>
+              <button
+                onClick={onClose}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={24} />
+              </button>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Memory Title
+                </label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Date
+                </label>
+                <input
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Category
+                </label>
+                <select
+                  value={formData.category}
+                  onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="celebration">Celebration</option>
+                  <option value="milestone">Milestone</option>
+                  <option value="funny">Funny</option>
+                  <option value="heartwarming">Heartwarming</option>
+                  <option value="tradition">Tradition</option>
+                  <option value="travel">Travel</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Author
+                </label>
+                <input
+                  type="text"
+                  value={formData.author}
+                  onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  value={formData.location}
+                  onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Image URL
+                </label>
+                <input
+                  type="url"
+                  value={formData.image}
+                  onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Latitude
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  value={formData.coordinates?.lat || ''}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    coordinates: { ...prev.coordinates, lat: parseFloat(e.target.value) }
+                  }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Longitude
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  value={formData.coordinates?.lng || ''}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    coordinates: { ...prev.coordinates, lng: parseFloat(e.target.value) }
+                  }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Story
+              </label>
+              <textarea
+                value={formData.story}
+                onChange={(e) => setFormData(prev => ({ ...prev, story: e.target.value }))}
+                rows="4"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tags
+              </label>
+              <div className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                  placeholder="Add a tag"
+                  className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+                <button
+                  type="button"
+                  onClick={addTag}
+                  className="px-4 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.tags?.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm flex items-center gap-1"
+                  >
+                    #{tag}
+                    <button
+                      type="button"
+                      onClick={() => removeTag(tag)}
+                      className="text-gray-500 hover:text-red-500"
+                    >
+                      <X size={14} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex space-x-4 pt-6 border-t border-gray-200">
+              <button
+                type="submit"
+                className="flex-1 bg-primary-600 text-white py-3 px-6 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center justify-center"
+              >
+                <Save size={18} className="mr-2" />
+                {isEdit ? 'Update Memory' : 'Save Memory'}
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 bg-gray-300 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-400 transition-colors duration-200"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Family Memories & Timeline</h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             A chronological journey through our precious moments, celebrations, milestones, and the stories that define the SAAJ family. 
@@ -204,8 +336,19 @@ const Memories = () => {
           </p>
         </div>
 
-        {/* Enhanced Filters */}
+        {/* Controls */}
         <div className="mb-8 space-y-4">
+          {/* Add Memory Button */}
+          <div className="text-center">
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="bg-primary-600 text-white py-3 px-6 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center justify-center mx-auto"
+            >
+              <Plus size={18} className="mr-2" />
+              Add New Memory
+            </button>
+          </div>
+
           {/* Year Filter */}
           <div className="text-center">
             <h3 className="text-sm font-medium text-gray-700 mb-3">Filter by Year</h3>
@@ -312,6 +455,14 @@ const Memories = () => {
                       </div>
                     </div>
 
+                    {/* Coordinates */}
+                    <div className={`flex flex-wrap gap-4 mb-6 text-sm text-gray-500 ${isEven ? 'lg:justify-start' : 'lg:justify-end'} justify-center`}>
+                      <div className="flex items-center">
+                        <Globe size={16} className="mr-1" />
+                        {memory.coordinates.lat.toFixed(4)}, {memory.coordinates.lng.toFixed(4)}
+                      </div>
+                    </div>
+
                     {/* Story */}
                     <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500 mb-6">
                       <p className="text-gray-700 leading-relaxed text-justify">
@@ -320,12 +471,37 @@ const Memories = () => {
                     </div>
 
                     {/* Tags */}
-                    <div className={`flex flex-wrap gap-2 ${isEven ? 'lg:justify-start' : 'lg:justify-end'} justify-center`}>
+                    <div className={`flex flex-wrap gap-2 mb-6 ${isEven ? 'lg:justify-start' : 'lg:justify-end'} justify-center`}>
                       {memory.tags.map((tag, idx) => (
                         <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
                           #{tag}
                         </span>
                       ))}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className={`flex flex-wrap gap-3 ${isEven ? 'lg:justify-start' : 'lg:justify-end'} justify-center`}>
+                      <button
+                        onClick={() => handleSeeOnMap(memory)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                      >
+                        <MapPin size={16} className="mr-1" />
+                        See on Map
+                      </button>
+                      <button
+                        onClick={() => setEditingMemory(memory)}
+                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                      >
+                        <Edit3 size={16} className="mr-1" />
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteMemory(memory.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                      >
+                        <Trash2 size={16} className="mr-1" />
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -386,11 +562,32 @@ const Memories = () => {
             Have a special family moment you'd like to add to our collection? 
             We'd love to hear your story and add it to our memory bank!
           </p>
-          <button className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200">
-            Submit a Memory
+          <button 
+            onClick={() => setShowAddModal(true)}
+            className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200"
+          >
+            Add New Memory
           </button>
         </div>
       </div>
+
+      {/* Add Memory Modal */}
+      {showAddModal && (
+        <MemoryForm
+          onSave={handleAddMemory}
+          onClose={() => setShowAddModal(false)}
+        />
+      )}
+
+      {/* Edit Memory Modal */}
+      {editingMemory && (
+        <MemoryForm
+          memory={editingMemory}
+          onSave={handleEditMemory}
+          onClose={() => setEditingMemory(null)}
+          isEdit={true}
+        />
+      )}
     </div>
   );
 };
