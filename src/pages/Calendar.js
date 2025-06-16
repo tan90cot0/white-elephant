@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Users } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin } from 'lucide-react';
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -114,10 +114,6 @@ const Calendar = () => {
   const isToday = (date) => {
     const today = new Date();
     return date.toDateString() === today.toDateString();
-  };
-
-  const hasEvents = (date) => {
-    return getEventsForDate(date).length > 0;
   };
 
   const navigateMonth = (direction) => {

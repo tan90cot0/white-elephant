@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Clock, MapPin, Quote, Star } from 'lucide-react';
+import { Heart, Clock, MapPin, Quote } from 'lucide-react';
 
 const Memories = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');

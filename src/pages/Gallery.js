@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ExternalLink, Calendar, Users, Image as ImageIcon, Search } from 'lucide-react';
+import { ExternalLink, Calendar, Image as ImageIcon, Search } from 'lucide-react';
 
 const Gallery = () => {
   const [searchTerm, setSearchTerm] = useState('');
