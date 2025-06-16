@@ -399,17 +399,6 @@ const Map = () => {
                 </div>
               </div>
             </div>
-
-            {/* Info Box */}
-            <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-blue-800 mb-2">Manage Memories</h3>
-              <p className="text-blue-700">
-                To add, edit, or delete memories, visit the{' '}
-                <a href="/memories" className="underline hover:text-blue-900 font-medium">
-                  Memories page
-                </a>. All changes will automatically sync with this map.
-              </p>
-            </div>
           </div>
         </div>
       </div>

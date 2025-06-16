@@ -292,8 +292,8 @@ const galleryData = {
       id: 7,
       name: "Aryan's 15th Birthday",
       description: "Celebrating Aryan's 15th birthday in Pune - a special milestone celebration",
-      thumbnail: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 45,
+      thumbnail: "https://i.postimg.cc/7Zp0CRKq/Screenshot-2025-06-16-at-6-07-09-PM.png",
+      photoCount: 13,
       date: "Mar 25, 2017",
       category: "celebrations",
       coordinates: { lat: 18.596259500612504, lng: 73.78391185413726 }, // Pune home coordinates
@@ -301,10 +301,10 @@ const galleryData = {
     },
     {
       id: 8,
-      name: "Mom Album",
+      name: "Mom",
       description: "Beautiful collection of Mom's precious moments and memories",
-      thumbnail: "https://images.unsplash.com/photo-1494790108755-2616c68e9b63?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 120,
+      thumbnail: "https://i.postimg.cc/mDTcCWCW/Screenshot-2025-06-16-at-6-08-17-PM.png",
+      photoCount: 11,
       date: "Sep 29, 2020 - Sep 20, 2023",
       category: "family",
       coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
@@ -312,10 +312,10 @@ const galleryData = {
     },
     {
       id: 9,
-      name: "Papa Album",
+      name: "Papa",
       description: "Special collection of Papa's memorable moments and celebrations",
-      thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 85,
+      thumbnail: "https://i.postimg.cc/JnCNFFXp/Screenshot-2025-06-16-at-6-06-59-PM.png",
+      photoCount: 2,
       date: "Mar 31, 2022",
       category: "family",
       coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
@@ -323,10 +323,10 @@ const galleryData = {
     },
     {
       id: 10,
-      name: "Sparsh Album",
+      name: "Sparsh",
       description: "Sparsh's journey through the years - from childhood to young adulthood",
-      thumbnail: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 95,
+      thumbnail: "https://i.postimg.cc/5yn86NRr/Screenshot-2025-06-16-at-6-07-04-PM.png",
+      photoCount: 45,
       date: "Oct 4, 2017 - Mar 20, 2023",
       category: "family",
       coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
@@ -336,8 +336,8 @@ const galleryData = {
       id: 11,
       name: "Pune",
       description: "Family memories from our time in Pune - our previous home",
-      thumbnail: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 78,
+      thumbnail: "https://i.postimg.cc/GhXjpq0p/Screenshot-2025-06-16-at-6-06-54-PM.png",
+      photoCount: 2,
       date: "Jan 6, 2021",
       category: "Home",
       coordinates: { lat: 18.596259500612504, lng: 73.78391185413726 }, // Pune home coordinates
@@ -347,8 +347,8 @@ const galleryData = {
       id: 12,
       name: "Thailand",
       description: "Amazing family vacation to Thailand - exploring temples, beaches, and culture",
-      thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 156,
+      thumbnail: "https://i.postimg.cc/15dNTThD/Screenshot-2025-06-16-at-6-07-54-PM.png",
+      photoCount: 1,
       date: "May 30, 2018",
       category: "travel",
       coordinates: { lat: 13.7563, lng: 100.5018 }, // Bangkok, Thailand coordinates
