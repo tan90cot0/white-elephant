@@ -1,83 +1,97 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Users, MapPin, Plus, Coffee, Sun, Moon, Edit2, Save, X } from 'lucide-react';
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
+  const [showMealModal, setShowMealModal] = useState(false);
+  const [selectedMealDate, setSelectedMealDate] = useState(null);
+  const [editingMeal, setEditingMeal] = useState(null);
 
-  const events = [
+  const [events] = useState([
     {
       id: 1,
-      title: "Jitesh's Birthday",
-      date: "2024-03-15",
-      time: "19:00",
-      type: "birthday",
-      location: "Home",
-      description: "Celebrating Dad's special day with family dinner and cake!"
+      date: '2024-01-15',
+      title: 'Dad\'s Birthday',
+      type: 'birthday',
+      time: '7:00 PM',
+      location: 'Home',
+      attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
+      color: 'bg-pink-500'
     },
     {
       id: 2,
-      title: "Anju's Birthday",
-      date: "2024-05-22",
-      time: "18:30",
-      type: "birthday",
-      location: "Home",
-      description: "Mom's birthday celebration with her favorite cake and flowers!"
+      date: '2024-01-20',
+      title: 'Family Game Night',
+      type: 'activity',
+      time: '8:00 PM',
+      location: 'Living Room',
+      attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
+      color: 'bg-blue-500'
     },
     {
       id: 3,
-      title: "Sparsh's Birthday",
-      date: "2024-10-15",
-      time: "19:30",
-      type: "birthday",
-      location: "Home",
-      description: "Our youngest turns 19! Party with friends and family."
+      date: '2024-01-25',
+      title: 'Sparsh\'s College Interview',
+      type: 'milestone',
+      time: '10:00 AM',
+      location: 'College Campus',
+      attendees: ['Sparsh', 'Anju'],
+      color: 'bg-green-500'
     },
     {
       id: 4,
-      title: "Wedding Anniversary",
-      date: "2024-02-14",
-      time: "20:00",
-      type: "anniversary",
-      location: "Special Restaurant",
-      description: "Mom and Dad's wedding anniversary celebration!"
-    },
-    {
-      id: 5,
-      title: "Family Game Night",
-      date: "2024-01-20",
-      time: "20:00",
-      type: "regular",
-      location: "Living Room",
-      description: "Weekly family game night with board games and snacks."
-    },
-    {
-      id: 6,
-      title: "Diwali Celebration",
-      date: "2024-11-01",
-      time: "18:00",
-      type: "festival",
-      location: "Home",
-      description: "Festival of lights celebration with decorations and sweets!"
-    },
-    {
-      id: 7,
-      title: "Christmas Dinner",
-      date: "2024-12-25",
-      time: "19:00",
-      type: "festival",
-      location: "Home",
-      description: "Special Christmas dinner with the whole family."
-    },
-    {
-      id: 8,
-      title: "New Year's Eve",
-      date: "2024-12-31",
-      time: "21:00",
-      type: "celebration",
-      location: "Home",
-      description: "Welcoming the new year together with resolutions and hopes!"
+      date: '2024-02-01',
+      title: 'Family Vacation Planning',
+      type: 'planning',
+      time: '6:00 PM',
+      location: 'Home',
+      attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
+      color: 'bg-purple-500'
     }
+  ]);
+
+  const [mealPlans, setMealPlans] = useState({
+    '2024-01-15': {
+      breakfast: 'Pancakes with maple syrup and fresh berries',
+      lunch: 'Grilled chicken salad with quinoa',
+      dinner: 'Birthday special - Dad\'s favorite butter chicken with naan'
+    },
+    '2024-01-16': {
+      breakfast: 'Oatmeal with nuts and honey',
+      lunch: 'Vegetable stir-fry with brown rice',
+      dinner: 'Spaghetti bolognese with garlic bread'
+    },
+    '2024-01-17': {
+      breakfast: 'Toast with avocado and eggs',
+      lunch: 'Chickpea curry with chapati',
+      dinner: 'Fish curry with steamed rice'
+    },
+    '2024-01-18': {
+      breakfast: 'Smoothie bowl with granola',
+      lunch: 'Paneer tikka with mint chutney',
+      dinner: 'Dal tadka with jeera rice'
+    },
+    '2024-01-19': {
+      breakfast: 'Upma with coconut chutney',
+      lunch: 'Rajma with basmati rice',
+      dinner: 'Pizza night - homemade margherita'
+    },
+    '2024-01-20': {
+      breakfast: 'French toast with berries',
+      lunch: 'Chole bhature',
+      dinner: 'Game night snacks - sandwiches and nachos'
+    },
+    '2024-01-21': {
+      breakfast: 'Idli sambhar with chutney',
+      lunch: 'Biryani with raita',
+      dinner: 'Grilled vegetables with quinoa'
+    }
+  });
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
   const getEventTypeColor = (type) => {
@@ -106,20 +120,34 @@ const Calendar = () => {
     });
   };
 
-  const getEventsForDate = (date) => {
-    const dateStr = date.toISOString().split('T')[0];
-    return events.filter(event => event.date === dateStr);
+  const formatDateKey = (year, month, day) => {
+    return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   };
 
-  const isToday = (date) => {
-    const today = new Date();
-    return date.toDateString() === today.toDateString();
+  const getEventsForDate = (dateKey) => {
+    return events.filter(event => event.date === dateKey);
+  };
+
+  const getMealsForDate = (dateKey) => {
+    return mealPlans[dateKey] || { breakfast: '', lunch: '', dinner: '' };
+  };
+
+  const updateMeal = (dateKey, mealType, value) => {
+    setMealPlans(prev => ({
+      ...prev,
+      [dateKey]: {
+        ...prev[dateKey],
+        [mealType]: value
+      }
+    }));
   };
 
   const navigateMonth = (direction) => {
-    const newDate = new Date(currentDate);
-    newDate.setMonth(currentDate.getMonth() + direction);
-    setCurrentDate(newDate);
+    setCurrentDate(prev => {
+      const newDate = new Date(prev);
+      newDate.setMonth(prev.getMonth() + direction);
+      return newDate;
+    });
   };
 
   const renderCalendarDays = () => {
@@ -127,43 +155,50 @@ const Calendar = () => {
     const firstDay = getFirstDayOfMonth(currentDate);
     const days = [];
 
-    // Empty cells for days before the first day of the month
+    // Empty cells for previous month
     for (let i = 0; i < firstDay; i++) {
-      days.push(
-        <div key={`empty-${i}`} className="h-24 border border-gray-200"></div>
-      );
+      days.push(<div key={`empty-${i}`} className="h-24 border border-gray-200"></div>);
     }
 
-    // Days of the month
+    // Days of current month
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-      const dayEvents = getEventsForDate(date);
-      const isCurrentDay = isToday(date);
-      
+      const dateKey = formatDateKey(currentDate.getFullYear(), currentDate.getMonth(), day);
+      const dayEvents = getEventsForDate(dateKey);
+      const dayMeals = getMealsForDate(dateKey);
+      const isToday = new Date().toDateString() === new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toDateString();
+      const hasMeals = dayMeals.breakfast || dayMeals.lunch || dayMeals.dinner;
+
       days.push(
         <div
           key={day}
-          className={`h-24 border border-gray-200 p-2 cursor-pointer hover:bg-gray-50 transition-colors ${
-            isCurrentDay ? 'bg-primary-50 border-primary-300' : ''
+          className={`h-24 border border-gray-200 p-1 cursor-pointer hover:bg-gray-50 transition-colors duration-200 ${
+            isToday ? 'bg-blue-50 border-blue-300' : ''
           }`}
-          onClick={() => setSelectedDate(date)}
+          onClick={() => setSelectedDate(dateKey)}
         >
-          <div className={`text-sm font-medium mb-1 ${isCurrentDay ? 'text-primary-600' : 'text-gray-800'}`}>
+          <div className={`font-semibold text-sm mb-1 ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
             {day}
           </div>
-          <div className="space-y-1">
-            {dayEvents.slice(0, 2).map(event => (
-              <div
-                key={event.id}
-                className={`text-xs px-2 py-1 rounded truncate ${getEventTypeColor(event.type)}`}
-              >
-                {event.title}
-              </div>
-            ))}
-            {dayEvents.length > 2 && (
-              <div className="text-xs text-gray-500">+{dayEvents.length - 2} more</div>
-            )}
-          </div>
+          
+          {/* Events */}
+          {dayEvents.slice(0, 1).map(event => (
+            <div key={event.id} className={`text-xs p-1 rounded text-white truncate mb-1 ${event.color}`}>
+              {event.title}
+            </div>
+          ))}
+          
+          {dayEvents.length > 1 && (
+            <div className="text-xs text-gray-500">+{dayEvents.length - 1} more</div>
+          )}
+
+          {/* Meal indicator */}
+          {hasMeals && (
+            <div className="flex space-x-1 mt-1">
+              {dayMeals.breakfast && <div className="w-2 h-2 bg-yellow-400 rounded-full" title="Breakfast planned"></div>}
+              {dayMeals.lunch && <div className="w-2 h-2 bg-orange-400 rounded-full" title="Lunch planned"></div>}
+              {dayMeals.dinner && <div className="w-2 h-2 bg-red-400 rounded-full" title="Dinner planned"></div>}
+            </div>
+          )}
         </div>
       );
     }
@@ -171,47 +206,138 @@ const Calendar = () => {
     return days;
   };
 
-  const upcomingEvents = events
-    .filter(event => new Date(event.date) >= new Date())
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
-    .slice(0, 5);
+  const selectedDateEvents = selectedDate ? getEventsForDate(selectedDate) : [];
+  const selectedDateMeals = selectedDate ? getMealsForDate(selectedDate) : { breakfast: '', lunch: '', dinner: '' };
+
+  const MealEditModal = ({ dateKey, meals, onClose, onSave }) => {
+    const [tempMeals, setTempMeals] = useState(meals);
+
+    const handleSave = () => {
+      Object.keys(tempMeals).forEach(mealType => {
+        updateMeal(dateKey, mealType, tempMeals[mealType]);
+      });
+      onSave();
+      onClose();
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-lg p-6 w-full max-w-md">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold">Plan Meals for {new Date(dateKey).toLocaleDateString()}</h3>
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {/* Breakfast */}
+            <div>
+              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <Coffee size={16} className="mr-2 text-yellow-600" />
+                Breakfast
+              </label>
+              <textarea
+                value={tempMeals.breakfast}
+                onChange={(e) => setTempMeals(prev => ({ ...prev, breakfast: e.target.value }))}
+                placeholder="What's for breakfast?"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                rows="2"
+              />
+            </div>
+
+            {/* Lunch */}
+            <div>
+              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <Sun size={16} className="mr-2 text-orange-600" />
+                Lunch
+              </label>
+              <textarea
+                value={tempMeals.lunch}
+                onChange={(e) => setTempMeals(prev => ({ ...prev, lunch: e.target.value }))}
+                placeholder="What's for lunch?"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                rows="2"
+              />
+            </div>
+
+            {/* Dinner */}
+            <div>
+              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <Moon size={16} className="mr-2 text-red-600" />
+                Dinner
+              </label>
+              <textarea
+                value={tempMeals.dinner}
+                onChange={(e) => setTempMeals(prev => ({ ...prev, dinner: e.target.value }))}
+                placeholder="What's for dinner?"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                rows="2"
+              />
+            </div>
+          </div>
+
+          <div className="flex space-x-3 mt-6">
+            <button
+              onClick={handleSave}
+              className="flex-1 bg-primary-600 text-white py-2 px-4 rounded-md hover:bg-primary-700 transition-colors duration-200 flex items-center justify-center"
+            >
+              <Save size={16} className="mr-2" />
+              Save Meals
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors duration-200"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Family Calendar</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Keep track of birthdays, anniversaries, festivals, and all the special moments that bring our family together.
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Family Calendar & Meal Planner</h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Keep track of important family events, milestones, and plan delicious meals for every day.
+            Never miss a birthday or wonder "what's for dinner?" again!
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Calendar */}
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="bg-white rounded-lg shadow-lg">
               {/* Calendar Header */}
-              <div className="flex items-center justify-between p-6 bg-gradient-to-r from-primary-500 to-secondary-500 text-white">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
                 <button
                   onClick={() => navigateMonth(-1)}
-                  className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
                 >
                   <ChevronLeft size={20} />
                 </button>
-                <h2 className="text-2xl font-bold">{formatDate(currentDate)}</h2>
+                
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
+                </h2>
+                
                 <button
                   onClick={() => navigateMonth(1)}
-                  className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
                 >
                   <ChevronRight size={20} />
                 </button>
               </div>
 
-              {/* Days of Week */}
-              <div className="grid grid-cols-7 bg-gray-100">
+              {/* Days of week header */}
+              <div className="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                  <div key={day} className="p-4 text-center font-medium text-gray-600 border-r border-gray-200 last:border-r-0">
+                  <div key={day} className="p-3 text-center font-semibold text-gray-700">
                     {day}
                   </div>
                 ))}
@@ -221,103 +347,204 @@ const Calendar = () => {
               <div className="grid grid-cols-7">
                 {renderCalendarDays()}
               </div>
+
+              {/* Legend */}
+              <div className="p-4 bg-gray-50 border-t border-gray-200">
+                <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-yellow-400 rounded-full mr-2"></div>
+                    <span className="text-gray-600">Breakfast</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-orange-400 rounded-full mr-2"></div>
+                    <span className="text-gray-600">Lunch</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-red-400 rounded-full mr-2"></div>
+                    <span className="text-gray-600">Dinner</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Selected Date Info */}
+            {selectedDate && (
+              <div className="bg-white rounded-lg shadow-lg p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {new Date(selectedDate).toLocaleDateString('en-US', { 
+                      weekday: 'long', 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </h3>
+                  <button
+                    onClick={() => setSelectedDate(null)}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+
+                {/* Events for selected date */}
+                {selectedDateEvents.length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="font-medium text-gray-700 mb-3 flex items-center">
+                      <CalendarIcon size={16} className="mr-2" />
+                      Events
+                    </h4>
+                    <div className="space-y-2">
+                      {selectedDateEvents.map(event => (
+                        <div key={event.id} className="bg-gray-50 rounded-lg p-3">
+                          <div className={`inline-block px-2 py-1 rounded text-xs font-medium text-white mb-2 ${event.color}`}>
+                            {event.type.toUpperCase()}
+                          </div>
+                          <h5 className="font-medium text-gray-800">{event.title}</h5>
+                          <div className="text-sm text-gray-600 mt-1 space-y-1">
+                            <div className="flex items-center">
+                              <Clock size={12} className="mr-1" />
+                              {event.time}
+                            </div>
+                            <div className="flex items-center">
+                              <MapPin size={12} className="mr-1" />
+                              {event.location}
+                            </div>
+                            <div className="flex items-center">
+                              <Users size={12} className="mr-1" />
+                              {event.attendees.join(', ')}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Meals for selected date */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-medium text-gray-700 flex items-center">
+                      <Coffee size={16} className="mr-2" />
+                      Meal Plan
+                    </h4>
+                    <button
+                      onClick={() => {
+                        setSelectedMealDate(selectedDate);
+                        setShowMealModal(true);
+                      }}
+                      className="text-primary-600 hover:text-primary-700 text-sm flex items-center"
+                    >
+                      <Edit2 size={14} className="mr-1" />
+                      Edit
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="bg-yellow-50 rounded-lg p-3">
+                      <div className="flex items-center mb-2">
+                        <Coffee size={14} className="text-yellow-600 mr-2" />
+                        <span className="font-medium text-yellow-800">Breakfast</span>
+                      </div>
+                      <p className="text-sm text-yellow-700">
+                        {selectedDateMeals.breakfast || 'No breakfast planned'}
+                      </p>
+                    </div>
+
+                    <div className="bg-orange-50 rounded-lg p-3">
+                      <div className="flex items-center mb-2">
+                        <Sun size={14} className="text-orange-600 mr-2" />
+                        <span className="font-medium text-orange-800">Lunch</span>
+                      </div>
+                      <p className="text-sm text-orange-700">
+                        {selectedDateMeals.lunch || 'No lunch planned'}
+                      </p>
+                    </div>
+
+                    <div className="bg-red-50 rounded-lg p-3">
+                      <div className="flex items-center mb-2">
+                        <Moon size={14} className="text-red-600 mr-2" />
+                        <span className="font-medium text-red-800">Dinner</span>
+                      </div>
+                      <p className="text-sm text-red-700">
+                        {selectedDateMeals.dinner || 'No dinner planned'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Upcoming Events */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                <CalendarIcon size={20} className="mr-2 text-primary-600" />
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <CalendarIcon size={18} className="mr-2" />
                 Upcoming Events
               </h3>
               <div className="space-y-3">
-                {upcomingEvents.map(event => (
-                  <div key={event.id} className="border-l-4 border-primary-500 bg-primary-50 p-3 rounded-r-lg">
-                    <div className="flex items-start justify-between mb-1">
+                {events
+                  .filter(event => new Date(event.date) >= new Date())
+                  .sort((a, b) => new Date(a.date) - new Date(b.date))
+                  .slice(0, 3)
+                  .map(event => (
+                    <div key={event.id} className="border-l-4 border-primary-500 pl-3">
                       <h4 className="font-medium text-gray-800 text-sm">{event.title}</h4>
-                      <span className={`px-2 py-1 text-xs rounded-full ${getEventTypeColor(event.type)}`}>
-                        {event.type}
-                      </span>
+                      <p className="text-xs text-gray-600">
+                        {new Date(event.date).toLocaleDateString()} at {event.time}
+                      </p>
                     </div>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <CalendarIcon size={12} className="mr-1" />
-                      {new Date(event.date).toLocaleDateString()}
-                    </div>
-                    <div className="flex items-center text-xs text-gray-600">
-                      <Clock size={12} className="mr-1" />
-                      {event.time}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                {events.filter(event => new Date(event.date) >= new Date()).length === 0 && (
+                  <p className="text-gray-500 text-sm">No upcoming events</p>
+                )}
               </div>
             </div>
 
-            {/* Event Types Legend */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Event Types</h3>
+            {/* Quick Actions */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
               <div className="space-y-2">
-                {[
-                  { type: 'birthday', label: 'Birthdays' },
-                  { type: 'anniversary', label: 'Anniversaries' },
-                  { type: 'festival', label: 'Festivals' },
-                  { type: 'regular', label: 'Regular Events' },
-                  { type: 'celebration', label: 'Celebrations' }
-                ].map(({ type, label }) => (
-                  <div key={type} className="flex items-center">
-                    <div className={`w-4 h-4 rounded mr-2 ${getEventTypeColor(type)}`}></div>
-                    <span className="text-sm text-gray-600">{label}</span>
-                  </div>
-                ))}
+                <button className="w-full text-left p-3 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors duration-200 flex items-center">
+                  <Plus size={16} className="mr-3 text-primary-600" />
+                  <span className="text-primary-700 font-medium">Add New Event</span>
+                </button>
+                <button 
+                  onClick={() => {
+                    const today = formatDateKey(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+                    setSelectedMealDate(today);
+                    setShowMealModal(true);
+                  }}
+                  className="w-full text-left p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors duration-200 flex items-center"
+                >
+                  <Coffee size={16} className="mr-3 text-orange-600" />
+                  <span className="text-orange-700 font-medium">Plan Today's Meals</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Selected Date Events */}
-        {selectedDate && (
-          <div className="mt-8 bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              Events for {selectedDate.toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {getEventsForDate(selectedDate).length > 0 ? (
-                getEventsForDate(selectedDate).map(event => (
-                  <div key={event.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-semibold text-gray-800">{event.title}</h4>
-                      <span className={`px-2 py-1 text-xs rounded-full ${getEventTypeColor(event.type)}`}>
-                        {event.type}
-                      </span>
-                    </div>
-                    <div className="space-y-1 text-sm text-gray-600">
-                      <div className="flex items-center">
-                        <Clock size={14} className="mr-2" />
-                        {event.time}
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin size={14} className="mr-2" />
-                        {event.location}
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-700 mt-2">{event.description}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-full text-center py-8 text-gray-500">
-                  No events scheduled for this date.
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Meal Edit Modal */}
+      {showMealModal && selectedMealDate && (
+        <MealEditModal
+          dateKey={selectedMealDate}
+          meals={getMealsForDate(selectedMealDate)}
+          onClose={() => {
+            setShowMealModal(false);
+            setSelectedMealDate(null);
+          }}
+          onSave={() => {
+            // Refresh the selected date if it matches
+            if (selectedDate === selectedMealDate) {
+              // The meals will automatically update due to state change
+            }
+          }}
+        />
+      )}
     </div>
   );
 };
