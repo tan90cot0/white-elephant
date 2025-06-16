@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, Clock, MapPin, Quote, Plus, Edit3, Trash2, X, Save, Globe } from 'lucide-react';
+import { Heart, Clock, MapPin, Quote, Plus, Edit3, Trash2, X, Save, Globe, ExternalLink } from 'lucide-react';
 import { useMemories } from '../context/MemoryContext';
 
 const Memories = () => {
@@ -85,6 +85,7 @@ const Memories = () => {
       story: '',
       tags: [],
       image: '',
+      googlePhotosUrl: '',
     });
 
     const [tagInput, setTagInput] = useState('');
@@ -209,6 +210,19 @@ const Memories = () => {
                   value={formData.image}
                   onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Google Photos Album URL (Optional)
+                </label>
+                <input
+                  type="url"
+                  value={formData.googlePhotosUrl}
+                  onChange={(e) => setFormData(prev => ({ ...prev, googlePhotosUrl: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="https://photos.app.goo.gl/..."
                 />
               </div>
             </div>
@@ -411,11 +425,29 @@ const Memories = () => {
                   <div className="relative group">
                     <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                     <div className="relative bg-white p-2 rounded-2xl shadow-xl">
-                      <img
-                        src={memory.image}
-                        alt={memory.title}
-                        className="w-full h-80 object-cover rounded-xl"
-                      />
+                      {memory.googlePhotosUrl ? (
+                        <a
+                          href={memory.googlePhotosUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block relative group-hover:scale-105 transition-transform duration-300"
+                        >
+                          <img
+                            src={memory.image}
+                            alt={memory.title}
+                            className="w-full h-80 object-cover rounded-xl cursor-pointer"
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 rounded-xl flex items-center justify-center">
+                            <ExternalLink size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          </div>
+                        </a>
+                      ) : (
+                        <img
+                          src={memory.image}
+                          alt={memory.title}
+                          className="w-full h-80 object-cover rounded-xl"
+                        />
+                      )}
                       <div className="absolute -top-4 -right-4 bg-white rounded-full p-3 shadow-lg">
                         <span className="text-2xl">{getCategoryIcon(memory.category)}</span>
                       </div>
@@ -436,7 +468,19 @@ const Memories = () => {
 
                     {/* Title */}
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
-                      {memory.title}
+                      {memory.googlePhotosUrl ? (
+                        <a
+                          href={memory.googlePhotosUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-primary-600 transition-colors duration-200 flex items-center gap-2 group"
+                        >
+                          {memory.title}
+                          <ExternalLink size={20} className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        </a>
+                      ) : (
+                        memory.title
+                      )}
                     </h2>
 
                     {/* Metadata */}
@@ -592,4 +636,4 @@ const Memories = () => {
   );
 };
 
-export default Memories; 
+export default Memories;

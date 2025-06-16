@@ -353,6 +353,17 @@ const galleryData = {
       category: "travel",
       coordinates: { lat: 13.7563, lng: 100.5018 }, // Bangkok, Thailand coordinates
       googlePhotosUrl: "https://photos.app.goo.gl/Fyi3uCZ1tfj96sxs5"
+    },
+    {
+      id: 13,
+      name: "Father's Day",
+      description: "Father's Day Celebration",
+      thumbnail: "https://i.postimg.cc/ZqrmDgt5/IMG-8394.png",
+      photoCount: 2,
+      date: "June 15, 2025",
+      category: "family",
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/xLNYoqtSCZ7Rzq18A"
     }
   ],
   categories: [
@@ -395,8 +406,9 @@ I promise I'll try to be a better son and spend more quality time with you. You 
 Love,
 Aryan`,
       tags: ["celebration", "father's day", "family time", "love", "apology"],
-      image: "https://images.unsplash.com/photo-1567722681333-3115abe1a4c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023"
+      image: "https://i.postimg.cc/ZqrmDgt5/IMG-8394.png",
+      year: "2025",
+      googlePhotosUrl: "https://photos.app.goo.gl/xLNYoqtSCZ7Rzq18A"
     },
     {
       id: 2,
