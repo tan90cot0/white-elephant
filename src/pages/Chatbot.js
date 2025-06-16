@@ -8,7 +8,7 @@ const Chatbot = () => {
     {
       id: 1,
       type: 'bot',
-      content: "Hi there! I'm your family memory assistant. I know all about the SAAJ family's beautiful memories, stories, and special moments. Feel free to ask me anything about your family's journey - from the great pizza disaster to Sparsh's driving test adventure, or even about meal planning and upcoming events!",
+      content: "Hi there! I'm your family memory assistant. I know all about your family's beautiful memories, stories, and special moments. Feel free to ask me anything about your family's journey, meal planning, or upcoming events!",
       timestamp: new Date()
     }
   ]);
@@ -16,34 +16,58 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Dynamically create family context based on current memories
+  // Family data that would typically come from About Us page or other sources
+  const getFamilyData = () => {
+    // This would ideally be imported from AboutUs.js or a shared context
+    // For now, we'll extract it dynamically from memories
+    const authors = [...new Set(memories.map(m => m.author))];
+    const locations = [...new Set(memories.map(m => m.location))];
+    const categories = [...new Set(memories.map(m => m.category))];
+    const years = [...new Set(memories.map(m => m.year))].sort();
+    
+    return {
+      authors,
+      locations,
+      categories,
+      years,
+      totalMemories: memories.length
+    };
+  };
+
+  // Sample meal data that would come from Calendar component
+  const getSampleMeals = () => {
+    // This would ideally be imported from Calendar.js or a shared context
+    const mealCategories = ['Indian dishes', 'homemade pizza', 'breakfast items', 'healthy options'];
+    return mealCategories;
+  };
+
+  // Dynamically create family context based on current memories and data
   const createFamilyContext = () => {
+    const familyData = getFamilyData();
+    const mealCategories = getSampleMeals();
+    
     const memoriesText = memories.map((memory, index) => 
       `${index + 1}. ${memory.title} (${memory.date}): ${memory.story} [Category: ${memory.category}, Location: ${memory.location}, Author: ${memory.author}]`
     ).join('\n\n');
 
     return `
-    You are a family memory assistant for the SAAJ family (Sparsh-18, Anju-48, Aryan, Jitesh-50). Here's what you know about them:
+    You are a family memory assistant. Here's what you know about this family:
 
-    FAMILY MEMORIES:
-    ${memoriesText}
+    FAMILY MEMORIES (${familyData.totalMemories} total):
+    ${memoriesText || 'No memories have been added yet.'}
+
+    FAMILY INFORMATION:
+    - Family storytellers: ${familyData.authors.join(', ') || 'None yet'}
+    - Years documented: ${familyData.years.join(', ') || 'None yet'}
+    - Memory categories: ${familyData.categories.join(', ') || 'None yet'}
+    - Locations mentioned: ${familyData.locations.join(', ') || 'None yet'}
 
     MEAL PLANNING CONTEXT:
-    The family enjoys planning meals together. Sample meals include pancakes with berries, butter chicken (Dad's favorite), homemade pizza nights, and various Indian dishes like dal tadka, biryani, and chole bhature.
-
-    FAMILY DYNAMICS:
-    - Jitesh (Dad, 50): Loves cooking adventures (though not always successful), enjoys salads, tells childhood stories
-    - Anju (Mom, 48): The heart of the family, thoughtful planner, loves gardening, enjoys morning tea
-    - Aryan: Tech-savvy, loves challenges, made this website, enjoys beatboxing
-    - Sparsh (18): Recently turned adult, social media enthusiast, loves entertainment and games
-
-    ADDITIONAL CONTEXT:
-    - Total memories documented: ${memories.length}
-    - Years covered: ${[...new Set(memories.map(m => m.year))].sort().join(', ')}
-    - Memory categories: ${[...new Set(memories.map(m => m.category))].join(', ')}
-    - Family storytellers: ${[...new Set(memories.map(m => m.author))].join(', ')}
+    The family enjoys planning meals together. They have mentioned various meal categories including: ${mealCategories.join(', ')}.
 
     Respond as a warm, knowledgeable family friend who remembers all these details and can help with questions about memories, suggest meal ideas, or just chat about family life. Be conversational, caring, and reference specific memories when relevant. Always use the most current information from the family's memory collection.
+
+    If no memories are available yet, encourage the family to start documenting their special moments and offer to help with meal planning or general family conversation.
     `;
   };
 
@@ -139,12 +163,13 @@ const Chatbot = () => {
         return `the ${randomMemory.title.toLowerCase()} from ${randomMemory.date}`;
       };
 
+      const familyData = getFamilyData();
       const fallbackResponses = [
-        `I'd love to help you with that! As your family memory keeper, I remember all ${memories.length} wonderful moments you've shared. Could you tell me more about what specific memory or topic you'd like to discuss?`,
-        `That sounds like it would fit right in with your family's collection of beautiful memories! Just like ${getRandomMemory()}.`,
-        `Your family has such wonderful stories! With ${memories.length} memories spanning ${[...new Set(memories.map(m => m.year))].length} years. What would you like to know more about?`,
-        `I love how your family creates such meaningful moments together. Whether it's ${[...new Set(memories.map(m => m.category))].slice(0, 3).join(', ')}, there's always something special happening in the SAAJ household!`,
-        `That reminds me of one of your family's adventures! Your family really knows how to turn ordinary moments into extraordinary memories - you have ${memories.length} beautiful stories to prove it.`
+        `I'd love to help you with that! As your family memory keeper, I remember all ${familyData.totalMemories} wonderful moments you've shared. Could you tell me more about what specific memory or topic you'd like to discuss?`,
+        `That sounds like it would fit right in with your family's collection of beautiful memories! ${memories.length > 0 ? `Just like ${getRandomMemory()}.` : 'I\'d love to hear about it!'}`,
+        `Your family has such wonderful stories! ${familyData.totalMemories > 0 ? `With ${familyData.totalMemories} memories spanning ${familyData.years.length} years.` : 'I\'m excited to learn about your first memories!'} What would you like to know more about?`,
+        `I love how your family creates meaningful moments together. ${familyData.categories.length > 0 ? `Whether it's ${familyData.categories.slice(0, 3).join(', ')}, there's always something special happening!` : 'I can\'t wait to learn about your special moments!'}`,
+        `That reminds me of your family's adventures! ${familyData.totalMemories > 0 ? `Your family really knows how to turn ordinary moments into extraordinary memories - you have ${familyData.totalMemories} beautiful stories to prove it.` : 'I\'d love to help you start documenting your beautiful moments!'}`
       ];
 
       const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
@@ -173,12 +198,12 @@ const Chatbot = () => {
   const getSuggestedQuestions = () => {
     const baseQuestions = [
       "What should we have for dinner tonight?",
-      "Tell me about our family's traditions",
-      "What are some upcoming family events?"
+      "Tell me about our family",
+      "What are some meal suggestions?"
     ];
 
     if (memories.length === 0) {
-      return [...baseQuestions, "Tell me about the SAAJ family", "How can I add our first memory?"];
+      return [...baseQuestions, "How can I add our first memory?", "What makes a good family memory?"];
     }
 
     // Get some interesting memories to suggest
@@ -349,7 +374,7 @@ const Chatbot = () => {
         </div>
 
         {/* API Key Status */}
-        {!isApiKeyAvailable ? (
+        {!isApiKeyAvailable && (
           <div className="mt-8 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-start">
               <AlertCircle className="text-red-600 mt-1 mr-3" size={20} />
@@ -360,18 +385,6 @@ const Chatbot = () => {
                   <a href="https://console.mistral.ai/" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-800 ml-1">
                     Get your API key here
                   </a>.
-                </p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-4">
-            <div className="flex items-start">
-              <Sparkles className="text-green-600 mt-1 mr-3" size={20} />
-              <div>
-                <h4 className="font-medium text-green-800 mb-1">AI Ready</h4>
-                <p className="text-sm text-green-700">
-                  Your chatbot is connected and ready to help with your family memories and questions!
                 </p>
               </div>
             </div>
