@@ -16,22 +16,22 @@ const familyData = {
     {
       id: 1,
       name: "Jitesh",
-      role: "Father & Family Patriarch",
+      role: "Father & Brain of the Home",
       age: 50,
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "The wise leader of our family, Jitesh brings stability, wisdom, and endless dad jokes to our household. With years of experience in his professional field, he's always ready with advice and a warm hug.",
-      interests: ["Reading", "Gardening", "Cooking", "Technology"],
+      avatar: "https://i.postimg.cc/2j2Vjqq7/Screenshot-2025-06-16-at-10-16-15-PM.png",
+      bio: "The wise leader of our family, Papa brings stability, wisdom, and endless dad jokes to our household. With years of experience in his professional field, he's always ready with advice and a warm hug.",
+      interests: ["Reading", "News-ing", "Podcast-ing", "Fitness"],
       favoriteQuote: "Family is not an important thing, it's everything.",
-      funFact: "Can solve any technical problem and makes the best weekend pancakes!",
-      personality: ["Wise", "Caring", "Funny", "Reliable"]
+      funFact: "Can solve any problem and makes it looks so easy",
+      personality: ["Wise", "Disciplined", "Funny", "Reliable"]
     },
     {
       id: 2,
       name: "Anju",
       role: "Mother & Heart of the Home",
       age: 48,
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616c68e9b63?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "The nurturing soul of our family, Anju fills our home with love, delicious food, and endless care. She has an incredible ability to make everyone feel special and loved.",
+      avatar: "https://i.postimg.cc/1zQ9rPnz/Screenshot-2025-06-16-at-10-17-09-PM.png",
+      bio: "The nurturing soul of our family, Mumma fills our home with love, delicious food, and endless care. She has an incredible ability to make everyone feel special and loved.",
       interests: ["Cooking", "Gardening", "Music", "Family Time"],
       favoriteQuote: "A mother's love is the fuel that enables a normal human being to do the impossible.",
       funFact: "Remembers everyone's favorite dishes and can whip up a feast in no time!",
@@ -41,24 +41,24 @@ const familyData = {
       id: 3,
       name: "Aryan",
       role: "Elder Son & Tech Enthusiast",
-      age: "Adult",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "The tech-savvy member of the family who created this website! Passionate about technology, always exploring new innovations, and loves connecting the family through digital experiences.",
-      interests: ["Programming", "Photography", "Travel", "Music"],
+      age: "23",
+      avatar: "https://i.postimg.cc/ZYB5mfS4/Screenshot-2025-06-16-at-10-18-10-PM.png",
+      bio: "Passionate about technology, always exploring new innovations, and loves connecting the family through digital experiences.",
+      interests: ["Programming", "Badminton", "Travel", "Jokes"],
       favoriteQuote: "Technology is best when it brings people together.",
       funFact: "Built this family website from scratch and is always updating it with new features!",
-      personality: ["Creative", "Analytical", "Innovative", "Thoughtful"]
+      personality: ["Creative", "Analytical", "Innovative", "Tries-to-be-Funny"]
     },
     {
       id: 4,
       name: "Sparsh",
       role: "Younger Son & The Energizer",
       age: 18,
-      avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      avatar: "https://i.postimg.cc/nhdyCJ45/Screenshot-2025-06-16-at-10-18-48-PM.png",
       bio: "The youngest and most energetic member of our family! Just turned 18 and ready to take on the world. Brings joy, laughter, and youthful energy to every family gathering.",
-      interests: ["Sports", "Gaming", "Music", "Friends"],
-      favoriteQuote: "Life is short, make it sweet!",
-      funFact: "Can beat everyone in the family at video games and always knows the latest trends!",
+      interests: ["Badminton", "JEE", "Music", "Gym"],
+      favoriteQuote: "Let's go to BITS Goa!",
+      funFact: "Always jovial and always ready to have fun!",
       personality: ["Energetic", "Funny", "Social", "Adventurous"]
     }
   ],
@@ -87,7 +87,7 @@ const familyData = {
       role: 'Father',
       age: 50,
       emoji: '👨‍💼',
-      description: 'The wise patriarch of our family'
+      description: 'The wise brain of our family'
     },
     {
       name: 'Anju',
@@ -99,7 +99,7 @@ const familyData = {
     {
       name: 'Aryan',
       role: 'Elder Son',
-      age: 'Adult',
+      age: '23',
       emoji: '👨‍💻',
       description: 'Tech enthusiast and family web developer'
     },
