@@ -123,3 +123,11 @@ This project is created with ❤️ for the SAAJ family. Feel free to use this a
 ---
 
 *"Family is where life begins and love never ends." - The SAAJ Family*
+
+## Live URL
+https://saaj-family.vercel.app
+
+## Auto-Deployment
+✅ Connected to GitHub for automatic deployment on push to master branch.
+
+Built with React and hosted on Vercel.
