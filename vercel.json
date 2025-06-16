@@ -1,5 +1,5 @@
 {
-  "name": "saaj",
+  "name": "saaj-family",
   "buildCommand": "npm run build",
   "outputDirectory": "build",
   "framework": "create-react-app"
