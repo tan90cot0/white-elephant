@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Sparkles, MessageCircle, Heart, Clock, Coffee } from 'lucide-react';
+import { Send, Bot, User, Sparkles, MessageCircle, Heart, Clock, Coffee, AlertCircle } from 'lucide-react';
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
@@ -51,6 +51,10 @@ const Chatbot = () => {
   Respond as a warm, knowledgeable family friend who remembers all these details and can help with questions about memories, suggest meal ideas, or just chat about family life. Be conversational, caring, and reference specific memories when relevant.
   `;
 
+  // Check if API key is available
+  const apiKey = process.env.REACT_APP_MISTRAL_API_KEY;
+  const isApiKeyAvailable = apiKey && apiKey.trim() !== '';
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -74,12 +78,16 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
+      if (!isApiKeyAvailable) {
+        throw new Error('API key not configured');
+      }
+
       // Using API key from environment variables
       const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_MISTRAL_API_KEY}`
+          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
           model: 'mistral-large-latest',
@@ -99,7 +107,8 @@ const Chatbot = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response from Mistral API');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error?.message || `API Error: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -116,6 +125,17 @@ const Chatbot = () => {
     } catch (error) {
       console.error('Error calling Mistral API:', error);
       
+      let errorMessage = '';
+      if (!isApiKeyAvailable) {
+        errorMessage = "I'm sorry, but the API key hasn't been configured yet. Please add your Mistral API key to the .env file to enable AI responses.";
+      } else if (error.message.includes('401') || error.message.includes('403')) {
+        errorMessage = "I'm having trouble accessing the AI service. Please check if your API key is valid and has sufficient credits.";
+      } else if (error.message.includes('429')) {
+        errorMessage = "I'm receiving too many requests right now. Please wait a moment and try again.";
+      } else {
+        errorMessage = "I'm experiencing some technical difficulties right now. Let me give you a helpful response based on what I know about your family!";
+      }
+      
       // Fallback responses when API is not available
       const fallbackResponses = [
         "I'd love to help you with that! As your family memory keeper, I remember all those wonderful moments you've shared. Could you tell me more about what specific memory or topic you'd like to discuss?",
@@ -130,7 +150,7 @@ const Chatbot = () => {
       const botMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        content: `${randomResponse}\n\n*Note: I'm currently in demo mode. To enable full AI responses, please add your Mistral API key to the code.*`,
+        content: isApiKeyAvailable ? `${errorMessage}\n\n${randomResponse}` : errorMessage,
         timestamp: new Date()
       };
 
@@ -305,22 +325,35 @@ const Chatbot = () => {
           </div>
         </div>
 
-        {/* API Key Notice */}
-        <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <div className="flex items-start">
-            <Sparkles className="text-yellow-600 mt-1 mr-3" size={20} />
-            <div>
-              <h4 className="font-medium text-yellow-800 mb-1">Setup Required</h4>
-              <p className="text-sm text-yellow-700">
-                To enable full AI responses, please add your Mistral Large API key to the code. 
-                Currently running with demo fallback responses. 
-                <a href="https://console.mistral.ai/" target="_blank" rel="noopener noreferrer" className="underline hover:text-yellow-800">
-                  Get your API key here
-                </a>.
-              </p>
+        {/* API Key Status */}
+        {!isApiKeyAvailable ? (
+          <div className="mt-8 bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="flex items-start">
+              <AlertCircle className="text-red-600 mt-1 mr-3" size={20} />
+              <div>
+                <h4 className="font-medium text-red-800 mb-1">API Key Required</h4>
+                <p className="text-sm text-red-700">
+                  To enable AI responses, please add your Mistral API key to the .env file as REACT_APP_MISTRAL_API_KEY. 
+                  <a href="https://console.mistral.ai/" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-800 ml-1">
+                    Get your API key here
+                  </a>.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-start">
+              <Sparkles className="text-green-600 mt-1 mr-3" size={20} />
+              <div>
+                <h4 className="font-medium text-green-800 mb-1">AI Ready</h4>
+                <p className="text-sm text-green-700">
+                  Your chatbot is connected and ready to help with your family memories and questions!
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

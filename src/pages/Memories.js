@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, Clock, MapPin, Quote, Gift, Cake, Star, Camera, Plus, Edit3, Trash2, X, Save, User, Globe } from 'lucide-react';
+import { Heart, Clock, MapPin, Quote, Plus, Edit3, Trash2, X, Save, Globe } from 'lucide-react';
 import { useMemories } from '../context/MemoryContext';
 
 const Memories = () => {
