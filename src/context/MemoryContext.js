@@ -378,8 +378,23 @@ export const MemoryProvider = ({ children }) => {
       location: "Home",
       coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
       author: "Aryan",
-      story: "Happy Father's Day Papa!",
-      tags: ["celebration", "father's day", "family time", "love"],
+      story: `Dear Papa,
+
+Happy Father's Day! I know this might be a day late, but I wanted to write this for you.
+
+First, I'm really sorry about yesterday. I shouldn't have gone out with my friends on Father's Day. I should have been home with you and the family. I feel bad that I wasn't there to celebrate with you properly, and I'm sorry for not being more involved. You deserve so much better than that.
+
+You've always been there for me, through every mistake I've made, every time I've messed up, and every moment I needed guidance. You never made me feel bad about my choices, even when they weren't the best ones. You just quietly supported me and helped me learn.
+
+I remember all those times you stayed up late helping me with my projects, even when you were tired from work. You never said no when I needed help, whether it was with studies, fixing something, or just talking through my problems. You always made time for us, no matter how busy you were.
+
+I know I don't say it enough, but I'm grateful for everything you do. For working so hard to give us a good life, for being patient with me when I'm stubborn, for teaching me right from wrong, and for always believing in me even when I don't believe in myself.
+
+I promise I'll try to be a better son and spend more quality time with you. You mean the world to me, Papa.
+
+Love,
+Aryan`,
+      tags: ["celebration", "father's day", "family time", "love", "apology"],
       image: "https://images.unsplash.com/photo-1567722681333-3115abe1a4c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       year: "2023"
     },
