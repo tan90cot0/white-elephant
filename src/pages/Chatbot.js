@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Sparkles, MessageCircle, Heart, Clock, Coffee, AlertCircle } from 'lucide-react';
+import { useMemories } from '../context/MemoryContext';
 
 const Chatbot = () => {
+  const { memories } = useMemories();
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -14,42 +16,36 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Family memories context for the AI
-  const familyContext = `
-  You are a family memory assistant for the SAAJ family (Sparsh-18, Anju-48, Aryan, Jitesh-50). Here's what you know about them:
+  // Dynamically create family context based on current memories
+  const createFamilyContext = () => {
+    const memoriesText = memories.map((memory, index) => 
+      `${index + 1}. ${memory.title} (${memory.date}): ${memory.story} [Category: ${memory.category}, Location: ${memory.location}, Author: ${memory.author}]`
+    ).join('\n\n');
 
-  FAMILY MEMORIES:
-  1. Father's Day Celebration (June 18, 2023): A heartwarming celebration where they surprised Dad with his favorite cake and heartfelt letters. Dad teared up when he saw Sparsh's handmade card, saying it was the best gift he'd ever received.
+    return `
+    You are a family memory assistant for the SAAJ family (Sparsh-18, Anju-48, Aryan, Jitesh-50). Here's what you know about them:
 
-  2. Mom's Special Day - Women's Day (March 8, 2023): They celebrated Anju with surprise breakfast in bed and a handmade photo album filled with family memories. Mom's eyes lit up as she flipped through each page.
+    FAMILY MEMORIES:
+    ${memoriesText}
 
-  3. Sparsh's 18th Birthday Milestone (October 15, 2022): Sparsh officially became an adult! They threw a wonderful birthday party. The surprise video montage with childhood clips made everyone emotional.
+    MEAL PLANNING CONTEXT:
+    The family enjoys planning meals together. Sample meals include pancakes with berries, butter chicken (Dad's favorite), homemade pizza nights, and various Indian dishes like dal tadka, biryani, and chole bhature.
 
-  4. Family Vacation to Goa (August 20, 2022): Week-long vacation at beautiful beaches. They stayed in a cozy beach resort, tried water sports. Sparsh learned to surf, Aryan tried parasailing, and Mom collected seashells.
+    FAMILY DYNAMICS:
+    - Jitesh (Dad, 50): Loves cooking adventures (though not always successful), enjoys salads, tells childhood stories
+    - Anju (Mom, 48): The heart of the family, thoughtful planner, loves gardening, enjoys morning tea
+    - Aryan: Tech-savvy, loves challenges, made this website, enjoys beatboxing
+    - Sparsh (18): Recently turned adult, social media enthusiast, loves entertainment and games
 
-  5. New Year's Family Resolution (December 31, 2022): The family made a collective resolution to spend more quality time together and create lasting memories. They decided on weekly family game nights and monthly outings.
+    ADDITIONAL CONTEXT:
+    - Total memories documented: ${memories.length}
+    - Years covered: ${[...new Set(memories.map(m => m.year))].sort().join(', ')}
+    - Memory categories: ${[...new Set(memories.map(m => m.category))].join(', ')}
+    - Family storytellers: ${[...new Set(memories.map(m => m.author))].join(', ')}
 
-  6. The Great Pizza Disaster of 2022 (September 15, 2022): Dad tried to make perfect homemade pizza. Flour everywhere, dough stuck to the ceiling, smoke alarm beeping. They ended up ordering delivery but gained a hilarious memory.
-
-  7. Mom's Secret Garden Surprise (April 22, 2023): For months, Anju secretly planned a vegetable garden with sections dedicated to each family member's favorites - tomatoes for Dad, herbs for Sparsh, carrots for Aryan, and chili peppers for herself.
-
-  8. The Midnight Board Game Championship (December 31, 2022): New Year's Eve Monopoly game turned into 6-hour championship. Anju was the property mogul, Sparsh kept going to jail, Aryan was the sneaky banker. The game is still technically ongoing.
-
-  9. Sparsh's Driving Test Adventure (March 8, 2023): Sparsh was nervous about his driving test. The whole family made encouraging signs and brought snacks. When he passed, the DMV parking lot became their celebration party.
-
-  10. The Family Talent Show Nobody Asked For (July 4, 2023): Sparsh declared the family too boring and hosted an impromptu talent show. Mom did dramatic grocery list reading, Dad did comedy magic tricks, Aryan beatboxed while solving Rubik's cube, and Sparsh did interpretive dance.
-
-  MEAL PLANNING CONTEXT:
-  The family enjoys planning meals together. Sample meals include pancakes with berries, butter chicken (Dad's favorite), homemade pizza nights, and various Indian dishes like dal tadka, biryani, and chole bhature.
-
-  FAMILY DYNAMICS:
-  - Jitesh (Dad, 50): Loves cooking adventures (though not always successful), enjoys salads, tells childhood stories
-  - Anju (Mom, 48): The heart of the family, thoughtful planner, loves gardening, enjoys morning tea
-  - Aryan: Tech-savvy, loves challenges, made this website, enjoys beatboxing
-  - Sparsh (18): Recently turned adult, social media enthusiast, loves entertainment and games
-
-  Respond as a warm, knowledgeable family friend who remembers all these details and can help with questions about memories, suggest meal ideas, or just chat about family life. Be conversational, caring, and reference specific memories when relevant.
-  `;
+    Respond as a warm, knowledgeable family friend who remembers all these details and can help with questions about memories, suggest meal ideas, or just chat about family life. Be conversational, caring, and reference specific memories when relevant. Always use the most current information from the family's memory collection.
+    `;
+  };
 
   // Check if API key is available
   const apiKey = process.env.REACT_APP_MISTRAL_API_KEY;
@@ -82,7 +78,7 @@ const Chatbot = () => {
         throw new Error('API key not configured');
       }
 
-      // Using API key from environment variables
+      // Using API key from environment variables with dynamic context
       const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -94,7 +90,7 @@ const Chatbot = () => {
           messages: [
             {
               role: 'system',
-              content: familyContext
+              content: createFamilyContext()
             },
             {
               role: 'user',
@@ -136,13 +132,19 @@ const Chatbot = () => {
         errorMessage = "I'm experiencing some technical difficulties right now. Let me give you a helpful response based on what I know about your family!";
       }
       
-      // Fallback responses when API is not available
+      // Dynamic fallback responses based on current memories
+      const getRandomMemory = () => {
+        if (memories.length === 0) return "your wonderful family moments";
+        const randomMemory = memories[Math.floor(Math.random() * memories.length)];
+        return `the ${randomMemory.title.toLowerCase()} from ${randomMemory.date}`;
+      };
+
       const fallbackResponses = [
-        "I'd love to help you with that! As your family memory keeper, I remember all those wonderful moments you've shared. Could you tell me more about what specific memory or topic you'd like to discuss?",
-        "That sounds like it would fit right in with your family's collection of beautiful memories! Just like the time with the great pizza disaster or Mom's secret garden surprise.",
-        "Your family has such wonderful stories! From Sparsh's birthday celebrations to those midnight board game championships. What would you like to know more about?",
-        "I love how your family creates such meaningful moments together. Whether it's planning meals or celebrating milestones, there's always something special happening in the SAAJ household!",
-        "That reminds me of one of your family's adventures! Your family really knows how to turn ordinary moments into extraordinary memories."
+        `I'd love to help you with that! As your family memory keeper, I remember all ${memories.length} wonderful moments you've shared. Could you tell me more about what specific memory or topic you'd like to discuss?`,
+        `That sounds like it would fit right in with your family's collection of beautiful memories! Just like ${getRandomMemory()}.`,
+        `Your family has such wonderful stories! With ${memories.length} memories spanning ${[...new Set(memories.map(m => m.year))].length} years. What would you like to know more about?`,
+        `I love how your family creates such meaningful moments together. Whether it's ${[...new Set(memories.map(m => m.category))].slice(0, 3).join(', ')}, there's always something special happening in the SAAJ household!`,
+        `That reminds me of one of your family's adventures! Your family really knows how to turn ordinary moments into extraordinary memories - you have ${memories.length} beautiful stories to prove it.`
       ];
 
       const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
@@ -167,14 +169,35 @@ const Chatbot = () => {
     }
   };
 
-  const suggestedQuestions = [
-    "Tell me about Dad's pizza making adventure",
-    "What was Sparsh's driving test like?",
-    "How did Mom surprise everyone with her garden?",
-    "What should we have for dinner tonight?",
-    "Tell me about our family's New Year's resolution",
-    "What are some upcoming family events?"
-  ];
+  // Dynamically generate suggested questions based on current memories
+  const getSuggestedQuestions = () => {
+    const baseQuestions = [
+      "What should we have for dinner tonight?",
+      "Tell me about our family's traditions",
+      "What are some upcoming family events?"
+    ];
+
+    if (memories.length === 0) {
+      return [...baseQuestions, "Tell me about the SAAJ family", "How can I add our first memory?"];
+    }
+
+    // Get some interesting memories to suggest
+    const recentMemories = memories
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 3);
+
+    const memoryQuestions = recentMemories.map(memory => 
+      `Tell me about ${memory.title.toLowerCase()}`
+    );
+
+    // Add category-based questions
+    const categories = [...new Set(memories.map(m => m.category))];
+    const categoryQuestions = categories.slice(0, 2).map(category => 
+      `What ${category} memories do we have?`
+    );
+
+    return [...baseQuestions, ...memoryQuestions, ...categoryQuestions].slice(0, 6);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -262,7 +285,7 @@ const Chatbot = () => {
                 Try asking me about:
               </h4>
               <div className="flex flex-wrap gap-2">
-                {suggestedQuestions.map((question, index) => (
+                {getSuggestedQuestions().map((question, index) => (
                   <button
                     key={index}
                     onClick={() => setInputMessage(question)}
