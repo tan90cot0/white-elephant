@@ -74,12 +74,12 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // Note: You'll need to replace 'YOUR_MISTRAL_API_KEY' with the actual API key
+      // Using API key from environment variables
       const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_MISTRAL_API_KEY' // Replace with actual API key
+          'Authorization': `Bearer ${process.env.REACT_APP_MISTRAL_API_KEY}`
         },
         body: JSON.stringify({
           model: 'mistral-large-latest',

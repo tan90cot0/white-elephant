@@ -8,6 +8,7 @@ import Gallery from './pages/Gallery';
 import AboutUs from './pages/AboutUs';
 import Calendar from './pages/Calendar';
 import Chatbot from './pages/Chatbot';
+import Map from './pages/Map';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/chatbot" element={<Chatbot />} />
+            <Route path="/map" element={<Map />} />
           </Routes>
         </main>
         <Footer />

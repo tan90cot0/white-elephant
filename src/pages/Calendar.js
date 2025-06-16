@@ -6,7 +6,6 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showMealModal, setShowMealModal] = useState(false);
   const [selectedMealDate, setSelectedMealDate] = useState(null);
-  const [editingMeal, setEditingMeal] = useState(null);
 
   const [events] = useState([
     {
@@ -94,30 +93,12 @@ const Calendar = () => {
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  const getEventTypeColor = (type) => {
-    const colors = {
-      birthday: "bg-pink-500 text-white",
-      anniversary: "bg-red-500 text-white",
-      festival: "bg-orange-500 text-white",
-      regular: "bg-blue-500 text-white",
-      celebration: "bg-purple-500 text-white"
-    };
-    return colors[type] || "bg-gray-500 text-white";
-  };
-
   const getDaysInMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   };
 
   const getFirstDayOfMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  };
-
-  const formatDate = (date) => {
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long' 
-    });
   };
 
   const formatDateKey = (year, month, day) => {
