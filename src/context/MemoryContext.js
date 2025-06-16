@@ -79,6 +79,37 @@ const familyData = {
       title: "Fun & Laughter",
       description: "Life is better with laughter. We don't take ourselves too seriously!"
     }
+  ],
+  // Summary data for Home page
+  summary: [
+    {
+      name: 'Jitesh',
+      role: 'Father',
+      age: 50,
+      emoji: '👨‍💼',
+      description: 'The wise patriarch of our family'
+    },
+    {
+      name: 'Anju',
+      role: 'Mother',
+      age: 48,
+      emoji: '👩‍🍳',
+      description: 'The heart and soul of our home'
+    },
+    {
+      name: 'Aryan',
+      role: 'Elder Son',
+      age: 'Adult',
+      emoji: '👨‍💻',
+      description: 'Tech enthusiast and family web developer'
+    },
+    {
+      name: 'Sparsh',
+      role: 'Younger Son',
+      age: 18,
+      emoji: '🎓',
+      description: 'The energetic young spirit of our family'
+    }
   ]
 };
 
@@ -103,6 +134,44 @@ const mealData = {
     "Anju": ["Home-cooked meals", "Indian cuisine", "Fresh ingredients"],
     "Aryan": ["Variety", "International cuisine", "Quick meals"],
     "Sparsh": ["Comfort food", "Snacks", "Popular dishes"]
+  },
+  // Meal plans for calendar
+  plans: {
+    '2024-01-15': {
+      breakfast: 'Pancakes with maple syrup and fresh berries',
+      lunch: 'Grilled chicken salad with quinoa',
+      dinner: 'Birthday special - Dad\'s favorite butter chicken with naan'
+    },
+    '2024-01-16': {
+      breakfast: 'Oatmeal with nuts and honey',
+      lunch: 'Vegetable stir-fry with brown rice',
+      dinner: 'Spaghetti bolognese with garlic bread'
+    },
+    '2024-01-17': {
+      breakfast: 'Toast with avocado and eggs',
+      lunch: 'Chickpea curry with chapati',
+      dinner: 'Fish curry with steamed rice'
+    },
+    '2024-01-18': {
+      breakfast: 'Smoothie bowl with granola',
+      lunch: 'Paneer tikka with mint chutney',
+      dinner: 'Dal tadka with jeera rice'
+    },
+    '2024-01-19': {
+      breakfast: 'Upma with coconut chutney',
+      lunch: 'Rajma with basmati rice',
+      dinner: 'Pizza night - homemade margherita'
+    },
+    '2024-01-20': {
+      breakfast: 'French toast with berries',
+      lunch: 'Chole bhature',
+      dinner: 'Game night snacks - sandwiches and nachos'
+    },
+    '2024-01-21': {
+      breakfast: 'Idli sambhar with chutney',
+      lunch: 'Biryani with raita',
+      dinner: 'Grilled vegetables with quinoa'
+    }
   }
 };
 
@@ -150,138 +219,195 @@ const eventsData = [
   }
 ];
 
+// Gallery data structure - ready for backend
+const galleryData = {
+  photoAlbums: [
+    {
+      id: 1,
+      name: "Bangalore",
+      description: "Family moments in Bangalore",
+      thumbnail: "https://i.postimg.cc/L85P5SRq/Screenshot-2025-06-16-at-5-40-47-PM.png",
+      photoCount: 156,
+      date: "July 2023",
+      category: "Home",
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/fHRaNbnY6iAjGcT48"
+    },
+    {
+      id: 2,
+      name: "Parents on Campus",
+      description: "When mumma and papa were on campus (Cheena didi ki shaadi ke time)",
+      thumbnail: "https://i.postimg.cc/25BBdx1r/Screenshot-2025-06-16-at-5-40-55-PM.png",
+      photoCount: 5,
+      date: "Nov 26, 2024",
+      category: "IITD",
+      coordinates: { lat: 28.5449, lng: 77.1928 }, // IIT Delhi coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/kAGP9Rbd9T1119Ur6"
+    },
+    {
+      id: 3,
+      name: "Cheena Shaadi",
+      description: "Cheena didi's wedding celebration - a beautiful family gathering",
+      thumbnail: "https://i.postimg.cc/L5vq4CbB/Screenshot-2025-06-16-at-5-41-05-PM.png",
+      photoCount: 22,
+      date: "Nov 28 2024",
+      category: "celebrations",
+      coordinates: { lat: 28.6139, lng: 77.2090 }, // Delhi coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/7aNJXU1GwuZBXmKW6"
+    },
+    {
+      id: 4,
+      name: "Mom's Birthday 2024",
+      description: "Celebrating our amazing mother's special day with love and joy",
+      thumbnail: "https://i.postimg.cc/T3KyGcqg/Screenshot-2025-06-16-at-5-41-13-PM.png",
+      photoCount: 4,
+      date: "Oct 28 2024",
+      category: "celebrations",
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/gWxzMcJaRm2E16MX6"
+    },
+    {
+      id: 5,
+      name: "IIM Car Show",
+      description: "Fun times at the IIM car show - exploring cars and making memories",
+      thumbnail: "https://i.postimg.cc/Dzs84yNz/Screenshot-2025-06-16-at-5-41-20-PM.png",
+      photoCount: 25,
+      date: "Oct 1 2023",
+      category: "adventures",
+      coordinates: { lat: 12.9716, lng: 77.5946 }, // Bangalore coordinates (assuming IIM Bangalore)
+      googlePhotosUrl: "https://photos.app.goo.gl/RnLGW99Vgtu3j3mj8"
+    },
+    {
+      id: 6,
+      name: "UB City",
+      description: "Family outing to UB City - shopping, dining, and quality time together",
+      thumbnail: "https://i.postimg.cc/Yq90fxPZ/Screenshot-2025-06-16-at-5-41-30-PM.png",
+      photoCount: 15,
+      date: "Oct 28 2023",
+      category: "adventures",
+      coordinates: { lat: 12.9719, lng: 77.5937 }, // UB City Mall, Bangalore coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/gG53CaViweAzm4XeA"
+    },
+    {
+      id: 7,
+      name: "Aryan's 15th Birthday",
+      description: "Celebrating Aryan's 15th birthday in Pune - a special milestone celebration",
+      thumbnail: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      photoCount: 45,
+      date: "Mar 25, 2017",
+      category: "celebrations",
+      coordinates: { lat: 18.596259500612504, lng: 73.78391185413726 }, // Pune home coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/VjbHjHJDAVJQnUUM6"
+    },
+    {
+      id: 8,
+      name: "Mom Album",
+      description: "Beautiful collection of Mom's precious moments and memories",
+      thumbnail: "https://images.unsplash.com/photo-1494790108755-2616c68e9b63?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      photoCount: 120,
+      date: "Sep 29, 2020 - Sep 20, 2023",
+      category: "family",
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/8vqbvGEe2NZiEJVE7"
+    },
+    {
+      id: 9,
+      name: "Papa Album",
+      description: "Special collection of Papa's memorable moments and celebrations",
+      thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      photoCount: 85,
+      date: "Mar 31, 2022",
+      category: "family",
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/eVe4KFGgTJAwzfgu7"
+    },
+    {
+      id: 10,
+      name: "Sparsh Album",
+      description: "Sparsh's journey through the years - from childhood to young adulthood",
+      thumbnail: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      photoCount: 95,
+      date: "Oct 4, 2017 - Mar 20, 2023",
+      category: "family",
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/m9o6iNFAJCqqYSfR9"
+    },
+    {
+      id: 11,
+      name: "Pune",
+      description: "Family memories from our time in Pune - our previous home",
+      thumbnail: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      photoCount: 78,
+      date: "Jan 6, 2021",
+      category: "Home",
+      coordinates: { lat: 18.596259500612504, lng: 73.78391185413726 }, // Pune home coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/6mYtY2b2s7NznWy49"
+    },
+    {
+      id: 12,
+      name: "Thailand",
+      description: "Amazing family vacation to Thailand - exploring temples, beaches, and culture",
+      thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      photoCount: 156,
+      date: "May 30, 2018",
+      category: "travel",
+      coordinates: { lat: 13.7563, lng: 100.5018 }, // Bangkok, Thailand coordinates
+      googlePhotosUrl: "https://photos.app.goo.gl/Fyi3uCZ1tfj96sxs5"
+    }
+  ],
+  categories: [
+    { value: 'all', label: 'All Albums' },
+    { value: 'travel', label: 'Travel' },
+    { value: 'celebrations', label: 'Celebrations' },
+    { value: 'daily', label: 'Daily Life' },
+    { value: 'adventures', label: 'Adventures' },
+    { value: 'festivals', label: 'Festivals' },
+    { value: 'family', label: 'Family' },
+    { value: 'Home', label: 'Home' },
+    { value: 'IITD', label: 'IITD' }
+  ]
+};
+
 export const MemoryProvider = ({ children }) => {
   const [memories, setMemories] = useState([
     {
       id: 1,
       title: "Father's Day Celebration",
-      date: "June 18, 2023",
+      date: "June 15, 2025",
       category: "celebration",
       location: "Home",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
       author: "Aryan",
-      story: "A heartwarming Father's Day celebration where we surprised Dad with his favorite cake and heartfelt letters. The joy on his face was priceless as we gathered around the dinner table, sharing stories and expressing our gratitude for everything he has done for our family. It was a day filled with laughter, warm hugs, and the kind of love that makes a house a home. Dad's reaction when he saw the handmade card from Sparsh was absolutely priceless - he teared up and said it was the best gift he'd ever received.",
+      story: "Happy Father's Day Papa!",
       tags: ["celebration", "father's day", "family time", "love"],
       image: "https://images.unsplash.com/photo-1567722681333-3115abe1a4c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       year: "2023"
     },
     {
       id: 2,
-      title: "Mom's Special Day - Women's Day",
-      date: "March 8, 2023",
+      title: "Papa's 50th Birthday",
+      date: "March 31, 2025",
       category: "celebration",
       location: "Home",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 }, // Bangalore home coordinates
       author: "Sparsh",
-      story: "Celebrating our amazing mother on Women's Day with a surprise breakfast in bed and a handmade photo album filled with all our favorite family memories. Mom's eyes lit up as she flipped through each page, reliving the beautiful moments we've shared together. Her smile reminded us once again why she's the heart of our family. We spent the entire morning just talking, laughing, and sharing stories while she enjoyed her favorite tea and the pancakes we made from scratch.",
-      tags: ["celebration", "women's day", "appreciation", "breakfast"],
+      story: `Papa, aap meri duniya ka sabse bada sahaara ho,
+Meri har jeet ka asli aawaara ho,
+Jab bhi life tough lagi, aapke words ek magic jaisa kaam karte hain,
+Aur jab bhi rasta na dikhe, aapki muskurahat hi light ban jati hai.
+
+Aapne girne se pehle sambhalna sikha diya,
+Aur haarne se pehle jeet ka raasta dikhla diya,
+Bachpan se lekar aaj tak jo bhi sikha hai,
+Woh sab kuch sirf aapse hi toh mila hai.
+
+Aaj birthday hai aapka, ek hi wish hai meri,
+Aap hamesha haste raho, aur duniya ki koi tension aapko chhu bhi na paaye!
+Happy Birthday, Papa!`,
+      tags: ["celebration", "birthday", "appreciation", "poem"],
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       year: "2023"
     },
-    {
-      id: 3,
-      title: "Sparsh's 18th Birthday Milestone",
-      date: "October 15, 2022",
-      category: "milestone",
-      location: "Home",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Anju",
-      story: "Our youngest family member officially became an adult! We threw a wonderful birthday party with all his friends and family. Sparsh cut the cake with such happiness, and we couldn't be prouder of the young man he has become. The evening was filled with music, dancing, and endless stories about his childhood that had everyone in splits. The surprise video montage we created with clips from his childhood made everyone emotional, especially when we showed his first steps and first words.",
-      tags: ["milestone", "birthday", "growing up", "celebration"],
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022"
-    },
-    {
-      id: 4,
-      title: "Family Vacation to Goa",
-      date: "August 20, 2022",
-      category: "travel",
-      location: "Goa",
-      coordinates: { lat: 15.2993, lng: 74.1240 }, // Goa coordinates
-      author: "Jitesh",
-      story: "An unforgettable week-long family vacation to the beautiful beaches of Goa. We stayed in a cozy beach resort, tried water sports, explored local markets, and enjoyed the most amazing seafood. The highlight was watching the sunset together on Baga Beach while dad told us stories from his own childhood vacations. These are the moments that bind us together. Sparsh learned to surf, Aryan tried parasailing, and Mom collected the most beautiful seashells. Every evening we'd sit on the beach and plan the next day's adventures.",
-      tags: ["travel", "vacation", "beach", "bonding"],
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022"
-    },
-    {
-      id: 5,
-      title: "New Year's Family Resolution",
-      date: "December 31, 2022",
-      category: "milestone",
-      location: "Living Room",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Aryan",
-      story: "As we welcomed 2023, our family made a collective resolution to spend more quality time together and create lasting memories. We decided to have weekly family game nights, monthly outings, and to document our journey better. This website is actually a part of that resolution - a digital space to preserve and celebrate our family bond. We wrote down our individual goals and our family goals, sealing them in an envelope to open next New Year's Eve.",
-      tags: ["resolution", "new year", "family goals", "tradition"],
-      image: "https://images.unsplash.com/photo-1467810563316-b5476525c0f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022"
-    },
-    {
-      id: 6,
-      title: "The Great Pizza Disaster of 2022",
-      date: "September 15, 2022",
-      category: "funny",
-      location: "Kitchen",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Aryan",
-      story: "It was a Saturday evening when Dad decided he was going to make the 'perfect homemade pizza' for the family. Armed with YouTube tutorials and unwavering confidence, he started the adventure. What followed was a comedy of errors - flour everywhere, dough stuck to the ceiling (yes, the ceiling!), and a smoke alarm that wouldn't stop beeping. Mom tried to help but was laughing too hard to be useful. Sparsh was recording everything for his social media. In the end, we ordered pizza delivery, but we gained a memory that still makes us laugh until our stomachs hurt. Dad's pizza-making attempts are now a running joke in our family.",
-      tags: ["cooking", "family time", "laughter", "chaos"],
-      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022"
-    },
-    {
-      id: 7,
-      title: "Mom's Secret Garden Surprise",
-      date: "April 22, 2023",
-      category: "heartwarming",
-      location: "Backyard",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Sparsh",
-      story: "For months, Mom had been secretly planning something in the backyard. She would disappear for hours, coming back with dirt under her fingernails and a mysterious smile. We were all curious but she insisted it was a 'surprise for the family.' On Earth Day, she finally revealed her project - a beautiful vegetable garden with each section dedicated to one family member's favorite vegetables. There was a tomato section for Dad (he loves his salads), herbs for me (I'm the family's budding chef), carrots for Aryan (his childhood favorite), and chili peppers for her own cooking. The best part? She had made little signs with our names and photos from when we were kids. It wasn't just a garden; it was a love letter to each of us.",
-      tags: ["love", "surprise", "gardening", "family", "thoughtful"],
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023"
-    },
-    {
-      id: 8,
-      title: "The Midnight Board Game Championship",
-      date: "December 31, 2022",
-      category: "tradition",
-      location: "Living Room",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Jitesh",
-      story: "Every New Year's Eve, we have this tradition of staying up until midnight playing board games. This particular year, what started as a friendly game of Monopoly turned into an epic 6-hour championship battle. Anju was the property mogul, owning half the board by hour 3. Sparsh kept going to jail (ironically), and Aryan was the banker who somehow kept 'accidentally' giving himself extra money. I was just trying to survive! As midnight approached, we were all so invested in the game that we almost missed the countdown. We ended up welcoming the new year with dice in our hands and property cards scattered everywhere. The game? It's still technically ongoing - the board has been set up in the corner of our living room for over a year now.",
-      tags: ["tradition", "games", "new year", "competition", "laughter"],
-      image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2022"
-    },
-    {
-      id: 9,
-      title: "Sparsh's Driving Test Adventure",
-      date: "March 8, 2023",
-      category: "milestone",
-      location: "DMV",
-      coordinates: { lat: 40.7505, lng: -73.9934 }, // Manhattan DMV coordinates
-      author: "Anju",
-      story: "The day Sparsh was scheduled to take his driving test, he was more nervous than we'd ever seen him. He had been practicing for months, but suddenly he was convinced he'd forget everything. The whole family decided to turn it into a support mission. We made encouraging signs, brought his favorite snacks, and created a playlist of 'confidence-boosting' songs for the car ride. When he came out of the test, his face was unreadable. He walked slowly toward us, and we all held our breath. Then, suddenly, he broke into the biggest grin and yelled 'I PASSED!' The DMV parking lot turned into our own little celebration party. Other families looked at us like we were crazy, but we didn't care. Our youngest had reached another milestone, and we were bursting with pride.",
-      tags: ["milestone", "pride", "growing up", "achievement", "support"],
-      image: "https://images.unsplash.com/photo-1570025330536-a4d5ad4d4d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023"
-    },
-    {
-      id: 10,
-      title: "The Family Talent Show Nobody Asked For",
-      date: "July 4, 2023",
-      category: "funny",
-      location: "Living Room",
-      coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-      author: "Aryan",
-      story: "It was a lazy Sunday afternoon when Sparsh declared that our family was 'too boring' and needed more excitement. His solution? An impromptu family talent show with himself as the host and judge. Mom performed a dramatic reading of a grocery list, complete with Shakespearean gestures. Dad did magic tricks that were more comedy than magic (his card tricks involved us 'picking a card, any card' from a deck that only had jokers). I attempted to beatbox while solving a Rubik's cube - it was as disastrous as it sounds. Sparsh saved his own performance for last: an interpretive dance routine to the theme song of his favorite cartoon. By the end, we were all crying from laughter. The 'winner' was declared to be the family as a whole, and the prize was ice cream for everyone. Sometimes the best entertainment is the kind you create yourself.",
-      tags: ["entertainment", "creativity", "laughter", "spontaneous", "talent"],
-      image: "https://images.unsplash.com/photo-1541696877-7b9f4a5d9ad2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      year: "2023"
-    }
   ]);
 
   const [selectedMemoryForMap, setSelectedMemoryForMap] = useState(null);
@@ -316,7 +442,8 @@ export const MemoryProvider = ({ children }) => {
     // Additional data for chatbot and other components
     familyData,
     mealData,
-    eventsData
+    eventsData,
+    galleryData
   };
 
   return (

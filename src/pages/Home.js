@@ -1,38 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Users, Camera, Calendar, Heart, MessageCircle, Sparkles, MapPin } from 'lucide-react';
+import { useMemories } from '../context/MemoryContext';
 
 const Home = () => {
-  const familyMembers = [
-    {
-      name: 'Jitesh',
-      role: 'Father',
-      age: 50,
-      emoji: '👨‍💼',
-      description: 'The wise patriarch of our family'
-    },
-    {
-      name: 'Anju',
-      role: 'Mother',
-      age: 48,
-      emoji: '👩‍🍳',
-      description: 'The heart and soul of our home'
-    },
-    {
-      name: 'Aryan',
-      role: 'Elder Son',
-      age: 'Adult',
-      emoji: '👨‍💻',
-      description: 'Tech enthusiast and family web developer'
-    },
-    {
-      name: 'Sparsh',
-      role: 'Younger Son',
-      age: 18,
-      emoji: '🎓',
-      description: 'The energetic young spirit of our family'
-    }
-  ];
+  const { familyData } = useMemories();
+  const familyMembers = familyData.summary;
 
   return (
     <div className="min-h-screen">

@@ -1,102 +1,18 @@
 import React, { useState } from 'react';
 import { ExternalLink, Calendar, Image as ImageIcon, Search } from 'lucide-react';
+import { useMemories } from '../context/MemoryContext';
 
 const Gallery = () => {
+  const { galleryData } = useMemories();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Sample Google Photos albums data
-  const photoAlbums = [
-    {
-      id: 1,
-      name: "Family Vacation - Goa 2022",
-      description: "Sun, sand, and unforgettable family moments at the beautiful beaches of Goa",
-      thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 145,
-      date: "August 2022",
-      category: "travel",
-      googlePhotosUrl: "https://photos.google.com/share/sample-album-1"
-    },
-    {
-      id: 2,
-      name: "Sparsh's 18th Birthday Celebration",
-      description: "Our youngest turns 18! A memorable birthday party with friends and family",
-      thumbnail: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 89,
-      date: "October 2022",
-      category: "celebrations",
-      googlePhotosUrl: "https://photos.google.com/share/sample-album-2"
-    },
-    {
-      id: 3,
-      name: "Father's Day 2023",
-      description: "Celebrating the best dad in the world with cake, love, and heartfelt moments",
-      thumbnail: "https://images.unsplash.com/photo-1567722681333-3115abe1a4c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 34,
-      date: "June 2023",
-      category: "celebrations",
-      googlePhotosUrl: "https://photos.google.com/share/sample-album-3"
-    },
-    {
-      id: 4,
-      name: "Home Sweet Home - Daily Life",
-      description: "Candid moments from our everyday life, cooking, playing, and just being together",
-      thumbnail: "https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 234,
-      date: "Ongoing",
-      category: "daily",
-      googlePhotosUrl: "https://photos.google.com/share/sample-album-4"
-    },
-    {
-      id: 5,
-      name: "Wedding Anniversary - Mom & Dad",
-      description: "Celebrating another year of love, laughter, and togetherness",
-      thumbnail: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 67,
-      date: "February 2023",
-      category: "celebrations",
-      googlePhotosUrl: "https://photos.google.com/share/sample-album-5"
-    },
-    {
-      id: 6,
-      name: "Weekend Adventures",
-      description: "Exploring local places, trying new restaurants, and making memories around the city",
-      thumbnail: "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 178,
-      date: "2023",
-      category: "adventures",
-      googlePhotosUrl: "https://photos.google.com/share/sample-album-6"
-    },
-    {
-      id: 7,
-      name: "Festival Celebrations",
-      description: "Diwali, Holi, Christmas and all the festivals that bring us together",
-      thumbnail: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 156,
-      date: "2022-2023",
-      category: "festivals",
-      googlePhotosUrl: "https://photos.google.com/share/sample-album-7"
-    },
-    {
-      id: 8,
-      name: "Family Game Nights",
-      description: "Competitive board games, card games, and lots of laughter every weekend",
-      thumbnail: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      photoCount: 92,
-      date: "Weekly",
-      category: "daily",
-      googlePhotosUrl: "https://photos.google.com/share/sample-album-8"
-    }
-  ];
-
-  const categories = [
-    { value: 'all', label: 'All Albums', count: photoAlbums.length },
-    { value: 'travel', label: 'Travel', count: photoAlbums.filter(album => album.category === 'travel').length },
-    { value: 'celebrations', label: 'Celebrations', count: photoAlbums.filter(album => album.category === 'celebrations').length },
-    { value: 'daily', label: 'Daily Life', count: photoAlbums.filter(album => album.category === 'daily').length },
-    { value: 'adventures', label: 'Adventures', count: photoAlbums.filter(album => album.category === 'adventures').length },
-    { value: 'festivals', label: 'Festivals', count: photoAlbums.filter(album => album.category === 'festivals').length }
-  ];
+  // Get photo albums and categories from centralized data
+  const photoAlbums = galleryData.photoAlbums;
+  const categories = galleryData.categories.map(cat => ({
+    ...cat,
+    count: cat.value === 'all' ? photoAlbums.length : photoAlbums.filter(album => album.category === cat.value).length
+  }));
 
   const filteredAlbums = photoAlbums.filter(album => {
     const matchesSearch = album.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

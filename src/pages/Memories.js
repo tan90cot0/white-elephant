@@ -80,7 +80,7 @@ const Memories = () => {
       date: '',
       category: 'celebration',
       location: '',
-      coordinates: { lat: 40.7128, lng: -74.0060 },
+      coordinates: { lat: 12.891417671553656, lng: 77.58273228601996 },
       author: '',
       story: '',
       tags: [],
@@ -465,7 +465,7 @@ const Memories = () => {
 
                     {/* Story */}
                     <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500 mb-6">
-                      <p className="text-gray-700 leading-relaxed text-justify">
+                      <p className="text-gray-700 leading-relaxed text-justify whitespace-pre-line">
                         {memory.story}
                       </p>
                     </div>

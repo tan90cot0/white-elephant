@@ -1,92 +1,17 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Users, MapPin, Plus, Coffee, Sun, Moon, Edit2, Save, X } from 'lucide-react';
+import { useMemories } from '../context/MemoryContext';
 
 const Calendar = () => {
+  const { eventsData, mealData } = useMemories();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [showMealModal, setShowMealModal] = useState(false);
   const [selectedMealDate, setSelectedMealDate] = useState(null);
 
-  const [events] = useState([
-    {
-      id: 1,
-      date: '2024-01-15',
-      title: 'Dad\'s Birthday',
-      type: 'birthday',
-      time: '7:00 PM',
-      location: 'Home',
-      attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
-      color: 'bg-pink-500'
-    },
-    {
-      id: 2,
-      date: '2024-01-20',
-      title: 'Family Game Night',
-      type: 'activity',
-      time: '8:00 PM',
-      location: 'Living Room',
-      attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
-      color: 'bg-blue-500'
-    },
-    {
-      id: 3,
-      date: '2024-01-25',
-      title: 'Sparsh\'s College Interview',
-      type: 'milestone',
-      time: '10:00 AM',
-      location: 'College Campus',
-      attendees: ['Sparsh', 'Anju'],
-      color: 'bg-green-500'
-    },
-    {
-      id: 4,
-      date: '2024-02-01',
-      title: 'Family Vacation Planning',
-      type: 'planning',
-      time: '6:00 PM',
-      location: 'Home',
-      attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
-      color: 'bg-purple-500'
-    }
-  ]);
-
-  const [mealPlans, setMealPlans] = useState({
-    '2024-01-15': {
-      breakfast: 'Pancakes with maple syrup and fresh berries',
-      lunch: 'Grilled chicken salad with quinoa',
-      dinner: 'Birthday special - Dad\'s favorite butter chicken with naan'
-    },
-    '2024-01-16': {
-      breakfast: 'Oatmeal with nuts and honey',
-      lunch: 'Vegetable stir-fry with brown rice',
-      dinner: 'Spaghetti bolognese with garlic bread'
-    },
-    '2024-01-17': {
-      breakfast: 'Toast with avocado and eggs',
-      lunch: 'Chickpea curry with chapati',
-      dinner: 'Fish curry with steamed rice'
-    },
-    '2024-01-18': {
-      breakfast: 'Smoothie bowl with granola',
-      lunch: 'Paneer tikka with mint chutney',
-      dinner: 'Dal tadka with jeera rice'
-    },
-    '2024-01-19': {
-      breakfast: 'Upma with coconut chutney',
-      lunch: 'Rajma with basmati rice',
-      dinner: 'Pizza night - homemade margherita'
-    },
-    '2024-01-20': {
-      breakfast: 'French toast with berries',
-      lunch: 'Chole bhature',
-      dinner: 'Game night snacks - sandwiches and nachos'
-    },
-    '2024-01-21': {
-      breakfast: 'Idli sambhar with chutney',
-      lunch: 'Biryani with raita',
-      dinner: 'Grilled vegetables with quinoa'
-    }
-  });
+  // Use centralized data
+  const events = eventsData;
+  const [mealPlans, setMealPlans] = useState(mealData.plans);
 
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
