@@ -3,7 +3,7 @@ import { Send, Bot, User, Sparkles, MessageCircle, Heart, Clock, Coffee, AlertCi
 import { useMemories } from '../context/MemoryContext';
 
 const Chatbot = () => {
-  const { memories } = useMemories();
+  const { memories, familyData, mealData, eventsData } = useMemories();
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -16,10 +16,8 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Family data that would typically come from About Us page or other sources
-  const getFamilyData = () => {
-    // This would ideally be imported from AboutUs.js or a shared context
-    // For now, we'll extract it dynamically from memories
+  // Get family statistics from actual data
+  const getFamilyStats = () => {
     const authors = [...new Set(memories.map(m => m.author))];
     const locations = [...new Set(memories.map(m => m.location))];
     const categories = [...new Set(memories.map(m => m.category))];
@@ -34,40 +32,63 @@ const Chatbot = () => {
     };
   };
 
-  // Sample meal data that would come from Calendar component
-  const getSampleMeals = () => {
-    // This would ideally be imported from Calendar.js or a shared context
-    const mealCategories = ['Indian dishes', 'homemade pizza', 'breakfast items', 'healthy options'];
-    return mealCategories;
-  };
-
-  // Dynamically create family context based on current memories and data
+  // Create comprehensive family context using all available data
   const createFamilyContext = () => {
-    const familyData = getFamilyData();
-    const mealCategories = getSampleMeals();
+    const stats = getFamilyStats();
     
     const memoriesText = memories.map((memory, index) => 
       `${index + 1}. ${memory.title} (${memory.date}): ${memory.story} [Category: ${memory.category}, Location: ${memory.location}, Author: ${memory.author}]`
     ).join('\n\n');
 
-    return `
-    You are a family memory assistant. Here's what you know about this family:
+    const familyMembersText = familyData.members.map(member => 
+      `${member.name} (${member.age}${typeof member.age === 'number' ? ' years old' : ''}): ${member.bio} Interests: ${member.interests.join(', ')}. Personality: ${member.personality.join(', ')}. Fun fact: ${member.funFact}`
+    ).join('\n');
 
-    FAMILY MEMORIES (${familyData.totalMemories} total):
+    const upcomingEventsText = eventsData.map(event => 
+      `${event.title} on ${event.date} at ${event.time} (${event.location})`
+    ).join('\n');
+
+    return `
+    You are a family memory assistant with comprehensive knowledge about this family. Here's everything you know:
+
+    FAMILY MEMBERS:
+    ${familyMembersText}
+
+    FAMILY VALUES:
+    ${familyData.values.map(value => `${value.title}: ${value.description}`).join('\n')}
+
+    FAMILY MEMORIES (${stats.totalMemories} total):
     ${memoriesText || 'No memories have been added yet.'}
 
-    FAMILY INFORMATION:
-    - Family storytellers: ${familyData.authors.join(', ') || 'None yet'}
-    - Years documented: ${familyData.years.join(', ') || 'None yet'}
-    - Memory categories: ${familyData.categories.join(', ') || 'None yet'}
-    - Locations mentioned: ${familyData.locations.join(', ') || 'None yet'}
+    MEMORY STATISTICS:
+    - Total memories: ${stats.totalMemories}
+    - Memory authors: ${stats.authors.join(', ') || 'None yet'}
+    - Years documented: ${stats.years.join(', ') || 'None yet'}
+    - Categories: ${stats.categories.join(', ') || 'None yet'}
+    - Locations: ${stats.locations.join(', ') || 'None yet'}
 
-    MEAL PLANNING CONTEXT:
-    The family enjoys planning meals together. They have mentioned various meal categories including: ${mealCategories.join(', ')}.
+    MEAL PLANNING INFORMATION:
+    - Meal categories: ${mealData.categories.join(', ')}
+    - Sample breakfast options: ${mealData.sampleMeals.breakfast.join(', ')}
+    - Sample lunch options: ${mealData.sampleMeals.lunch.join(', ')}
+    - Sample dinner options: ${mealData.sampleMeals.dinner.join(', ')}
+    - Family meal preferences:
+    ${Object.entries(mealData.preferences).map(([member, prefs]) => `  ${member}: ${prefs.join(', ')}`).join('\n')}
 
-    Respond as a warm, knowledgeable family friend who remembers all these details and can help with questions about memories, suggest meal ideas, or just chat about family life. Be conversational, caring, and reference specific memories when relevant. Always use the most current information from the family's memory collection.
+    UPCOMING EVENTS:
+    ${upcomingEventsText}
 
-    If no memories are available yet, encourage the family to start documenting their special moments and offer to help with meal planning or general family conversation.
+    INSTRUCTIONS:
+    You are a warm, knowledgeable family assistant who knows all these details intimately. Help with:
+    1. Questions about family memories and stories
+    2. Meal planning and suggestions based on preferences
+    3. Information about family members and their interests
+    4. Upcoming events and planning
+    5. General family conversation and advice
+
+    Always reference specific details from the family's actual data. Be conversational, caring, and personal in your responses. If asked about meals, consider individual preferences and suggest appropriate options.
+
+    ${memories.length === 0 ? 'If no memories are available yet, encourage the family to start documenting their special moments.' : ''}
     `;
   };
 
@@ -102,7 +123,6 @@ const Chatbot = () => {
         throw new Error('API key not configured');
       }
 
-      // Using API key from environment variables with dynamic context
       const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -156,20 +176,25 @@ const Chatbot = () => {
         errorMessage = "I'm experiencing some technical difficulties right now. Let me give you a helpful response based on what I know about your family!";
       }
       
-      // Dynamic fallback responses based on current memories
+      // Enhanced fallback responses using actual family data
       const getRandomMemory = () => {
         if (memories.length === 0) return "your wonderful family moments";
         const randomMemory = memories[Math.floor(Math.random() * memories.length)];
-        return `the ${randomMemory.title.toLowerCase()} from ${randomMemory.date}`;
+        return `${randomMemory.title.toLowerCase()} from ${randomMemory.date}`;
       };
 
-      const familyData = getFamilyData();
+      const getRandomFamilyMember = () => {
+        const randomMember = familyData.members[Math.floor(Math.random() * familyData.members.length)];
+        return randomMember.name;
+      };
+
+      const stats = getFamilyStats();
       const fallbackResponses = [
-        `I'd love to help you with that! As your family memory keeper, I remember all ${familyData.totalMemories} wonderful moments you've shared. Could you tell me more about what specific memory or topic you'd like to discuss?`,
-        `That sounds like it would fit right in with your family's collection of beautiful memories! ${memories.length > 0 ? `Just like ${getRandomMemory()}.` : 'I\'d love to hear about it!'}`,
-        `Your family has such wonderful stories! ${familyData.totalMemories > 0 ? `With ${familyData.totalMemories} memories spanning ${familyData.years.length} years.` : 'I\'m excited to learn about your first memories!'} What would you like to know more about?`,
-        `I love how your family creates meaningful moments together. ${familyData.categories.length > 0 ? `Whether it's ${familyData.categories.slice(0, 3).join(', ')}, there's always something special happening!` : 'I can\'t wait to learn about your special moments!'}`,
-        `That reminds me of your family's adventures! ${familyData.totalMemories > 0 ? `Your family really knows how to turn ordinary moments into extraordinary memories - you have ${familyData.totalMemories} beautiful stories to prove it.` : 'I\'d love to help you start documenting your beautiful moments!'}`
+        `I'd love to help you with that! I know all about ${familyData.members.map(m => m.name).join(', ')} and your ${stats.totalMemories} wonderful memories. What would you like to know?`,
+        `That sounds interesting! ${memories.length > 0 ? `It reminds me of ${getRandomMemory()}.` : 'I\'d love to hear about it!'} How can I help you with that?`,
+        `Your family has such wonderful dynamics! ${getRandomFamilyMember()} would probably have great insights about this. ${stats.totalMemories > 0 ? `With ${stats.totalMemories} memories spanning ${stats.years.length} years, there's so much to explore!` : 'I\'m excited to learn about your first memories!'}`,
+        `I love helping with family matters! Whether it's about ${stats.categories.length > 0 ? stats.categories.slice(0, 3).join(', ') : 'your special moments'} or meal planning with everyone's preferences in mind, I'm here to help.`,
+        `That's a great question! ${stats.totalMemories > 0 ? `Your family has ${stats.totalMemories} beautiful stories, and I know all about ${familyData.members.map(m => m.name).join(', ')}'s interests and preferences.` : 'I\'d love to help you start documenting your beautiful moments!'}`
       ];
 
       const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
@@ -194,34 +219,43 @@ const Chatbot = () => {
     }
   };
 
-  // Dynamically generate suggested questions based on current memories
+  // Generate suggested questions using comprehensive family data
   const getSuggestedQuestions = () => {
     const baseQuestions = [
       "What should we have for dinner tonight?",
-      "Tell me about our family",
-      "What are some meal suggestions?"
+      "Tell me about our family members",
+      "What are some upcoming events?"
     ];
 
     if (memories.length === 0) {
-      return [...baseQuestions, "How can I add our first memory?", "What makes a good family memory?"];
+      return [
+        ...baseQuestions,
+        `Tell me about ${familyData.members[0].name}`,
+        "How can I add our first memory?",
+        "What makes a good family memory?"
+      ];
     }
 
-    // Get some interesting memories to suggest
+    // Questions based on recent memories
     const recentMemories = memories
       .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 3);
+      .slice(0, 2);
 
     const memoryQuestions = recentMemories.map(memory => 
       `Tell me about ${memory.title.toLowerCase()}`
     );
 
-    // Add category-based questions
-    const categories = [...new Set(memories.map(m => m.category))];
-    const categoryQuestions = categories.slice(0, 2).map(category => 
-      `What ${category} memories do we have?`
+    // Questions based on family members
+    const memberQuestions = familyData.members.slice(0, 2).map(member => 
+      `What are ${member.name}'s favorite meals?`
     );
 
-    return [...baseQuestions, ...memoryQuestions, ...categoryQuestions].slice(0, 6);
+    // Questions based on upcoming events
+    const eventQuestions = eventsData.slice(0, 1).map(event => 
+      `Tell me about ${event.title.toLowerCase()}`
+    );
+
+    return [...baseQuestions, ...memoryQuestions, ...memberQuestions, ...eventQuestions].slice(0, 6);
   };
 
   return (

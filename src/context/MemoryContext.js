@@ -10,6 +10,146 @@ export const useMemories = () => {
   return context;
 };
 
+// Family data structure - ready for backend
+const familyData = {
+  members: [
+    {
+      id: 1,
+      name: "Jitesh",
+      role: "Father & Family Patriarch",
+      age: 50,
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      bio: "The wise leader of our family, Jitesh brings stability, wisdom, and endless dad jokes to our household. With years of experience in his professional field, he's always ready with advice and a warm hug.",
+      interests: ["Reading", "Gardening", "Cooking", "Technology"],
+      favoriteQuote: "Family is not an important thing, it's everything.",
+      funFact: "Can solve any technical problem and makes the best weekend pancakes!",
+      personality: ["Wise", "Caring", "Funny", "Reliable"]
+    },
+    {
+      id: 2,
+      name: "Anju",
+      role: "Mother & Heart of the Home",
+      age: 48,
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616c68e9b63?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      bio: "The nurturing soul of our family, Anju fills our home with love, delicious food, and endless care. She has an incredible ability to make everyone feel special and loved.",
+      interests: ["Cooking", "Gardening", "Music", "Family Time"],
+      favoriteQuote: "A mother's love is the fuel that enables a normal human being to do the impossible.",
+      funFact: "Remembers everyone's favorite dishes and can whip up a feast in no time!",
+      personality: ["Loving", "Nurturing", "Creative", "Strong"]
+    },
+    {
+      id: 3,
+      name: "Aryan",
+      role: "Elder Son & Tech Enthusiast",
+      age: "Adult",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      bio: "The tech-savvy member of the family who created this website! Passionate about technology, always exploring new innovations, and loves connecting the family through digital experiences.",
+      interests: ["Programming", "Photography", "Travel", "Music"],
+      favoriteQuote: "Technology is best when it brings people together.",
+      funFact: "Built this family website from scratch and is always updating it with new features!",
+      personality: ["Creative", "Analytical", "Innovative", "Thoughtful"]
+    },
+    {
+      id: 4,
+      name: "Sparsh",
+      role: "Younger Son & The Energizer",
+      age: 18,
+      avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      bio: "The youngest and most energetic member of our family! Just turned 18 and ready to take on the world. Brings joy, laughter, and youthful energy to every family gathering.",
+      interests: ["Sports", "Gaming", "Music", "Friends"],
+      favoriteQuote: "Life is short, make it sweet!",
+      funFact: "Can beat everyone in the family at video games and always knows the latest trends!",
+      personality: ["Energetic", "Funny", "Social", "Adventurous"]
+    }
+  ],
+  values: [
+    {
+      title: "Love & Support",
+      description: "We believe in unconditional love and supporting each other through thick and thin."
+    },
+    {
+      title: "Togetherness",
+      description: "Family time is sacred time. We prioritize being together and creating memories."
+    },
+    {
+      title: "Growth & Learning",
+      description: "We encourage each other to learn, grow, and pursue our individual passions."
+    },
+    {
+      title: "Fun & Laughter",
+      description: "Life is better with laughter. We don't take ourselves too seriously!"
+    }
+  ]
+};
+
+// Meal planning data structure - ready for backend
+const mealData = {
+  categories: [
+    "Indian dishes",
+    "Continental cuisine",
+    "Breakfast items",
+    "Healthy options",
+    "Comfort food",
+    "Quick meals",
+    "Special occasion dishes"
+  ],
+  sampleMeals: {
+    breakfast: ["Pancakes with berries", "Upma with chutney", "Toast with avocado", "Smoothie bowl"],
+    lunch: ["Butter chicken with naan", "Vegetable stir-fry", "Chickpea curry", "Grilled chicken salad"],
+    dinner: ["Dal tadka with rice", "Pasta with garlic bread", "Fish curry", "Homemade pizza"]
+  },
+  preferences: {
+    "Jitesh": ["Salads", "Healthy options", "Traditional dishes"],
+    "Anju": ["Home-cooked meals", "Indian cuisine", "Fresh ingredients"],
+    "Aryan": ["Variety", "International cuisine", "Quick meals"],
+    "Sparsh": ["Comfort food", "Snacks", "Popular dishes"]
+  }
+};
+
+// Events data structure - ready for backend
+const eventsData = [
+  {
+    id: 1,
+    date: '2024-01-15',
+    title: 'Dad\'s Birthday',
+    type: 'birthday',
+    time: '7:00 PM',
+    location: 'Home',
+    attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
+    color: 'bg-pink-500'
+  },
+  {
+    id: 2,
+    date: '2024-01-20',
+    title: 'Family Game Night',
+    type: 'activity',
+    time: '8:00 PM',
+    location: 'Living Room',
+    attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
+    color: 'bg-blue-500'
+  },
+  {
+    id: 3,
+    date: '2024-01-25',
+    title: 'Sparsh\'s College Interview',
+    type: 'milestone',
+    time: '10:00 AM',
+    location: 'College Campus',
+    attendees: ['Sparsh', 'Anju'],
+    color: 'bg-green-500'
+  },
+  {
+    id: 4,
+    date: '2024-02-01',
+    title: 'Family Vacation Planning',
+    type: 'planning',
+    time: '6:00 PM',
+    location: 'Home',
+    attendees: ['Sparsh', 'Anju', 'Aryan', 'Jitesh'],
+    color: 'bg-purple-500'
+  }
+];
+
 export const MemoryProvider = ({ children }) => {
   const [memories, setMemories] = useState([
     {
@@ -172,7 +312,11 @@ export const MemoryProvider = ({ children }) => {
     editMemory,
     deleteMemory,
     selectedMemoryForMap,
-    setSelectedMemoryForMap
+    setSelectedMemoryForMap,
+    // Additional data for chatbot and other components
+    familyData,
+    mealData,
+    eventsData
   };
 
   return (
